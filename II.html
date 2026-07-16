@@ -1,0 +1,834 @@
+
+<meta charset="UTF-8">
+<div id="vna-transit-guide">
+  <!-- Fonts Pre-load (Scoped under container or loaded dynamically if needed, styling uses standard fallback) -->
+  <style scoped>
+    /* CSS Scoped exclusively to #vna-transit-guide to prevent global webpage bleed */
+    #vna-transit-guide {
+      --vna-deep-teal: #006885;
+      --vna-teal-hover: #005C76;
+      --vna-teal-light: #33869D;
+      --vna-teal-mist: #F2F7F9;
+      --vna-lotus-gold: #DBA410;
+      --vna-gold-bg: #FCF5C5;
+      --vna-charcoal: #292929;
+      --vna-gray-border: #DCDCDC;
+      
+      font-family: 'Open Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--vna-charcoal);
+      background-color: var(--vna-teal-mist);
+      border: 1px solid rgba(0, 104, 133, 0.15);
+      border-radius: 12px;
+      padding: 32px 24px;
+      max-width: 900px;
+      margin: 20px auto;
+      box-sizing: border-box;
+      box-shadow: 0 10px 30px -15px rgba(0, 104, 133, 0.1);
+    }
+
+    #vna-transit-guide * {
+      box-sizing: border-box;
+    }
+
+    /* Header Styling */
+    #vna-transit-guide .vna-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--vna-deep-teal);
+      padding-bottom: 16px;
+      margin-bottom: 32px;
+    }
+
+    #vna-transit-guide .vna-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    #vna-transit-guide .vna-back-btn {
+      border: 1px solid rgba(0, 104, 133, 0.25);
+      background: #ffffff;
+      color: var(--vna-deep-teal);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    #vna-transit-guide .vna-back-btn:hover {
+      background: var(--vna-teal-mist);
+    }
+
+    #vna-transit-guide .vna-header-brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #vna-transit-guide .vna-airline-name {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: var(--vna-lotus-gold);
+      margin: 0;
+    }
+
+    #vna-transit-guide .vna-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--vna-deep-teal);
+      margin: 4px 0 0 0;
+    }
+
+    #vna-transit-guide .vna-badge {
+      background-color: var(--vna-lotus-gold);
+      color: #ffffff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Subtitle & Airport Banner */
+    #vna-transit-guide .vna-airport-banner {
+      background-color: #ffffff;
+      border-left: 4px solid var(--vna-lotus-gold);
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 32px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    #vna-transit-guide .vna-banner-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--vna-deep-teal);
+      margin: 0 0 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #vna-transit-guide .vna-banner-title svg {
+      fill: var(--vna-deep-teal);
+      width: 18px;
+      height: 18px;
+    }
+
+    #vna-transit-guide .vna-banner-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #555555;
+      margin: 0;
+    }
+
+    /* Timeline Container */
+    #vna-transit-guide .vna-timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    #vna-transit-guide .vna-timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 10px;
+      bottom: 24px;
+      width: 3px;
+      background: var(--vna-deep-teal);
+      opacity: 0.25;
+    }
+
+    /* Timeline Section Item */
+    #vna-transit-guide .vna-step {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    #vna-transit-guide .vna-step:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Timeline Bullet Node */
+    #vna-transit-guide .vna-node {
+      position: absolute;
+      left: -24px;
+      top: 8px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      border: 3px solid var(--vna-deep-teal);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+    }
+
+    #vna-transit-guide .vna-step.active .vna-node {
+      background-color: var(--vna-lotus-gold);
+      border-color: var(--vna-lotus-gold);
+      transform: scale(1.2);
+      box-shadow: 0 0 0 4px rgba(219, 164, 16, 0.2);
+    }
+
+    /* Interactive Accordion Button */
+    #vna-transit-guide .vna-step-trigger {
+      width: 100%;
+      background-color: #ffffff;
+      border: 1px solid var(--vna-gray-border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      text-align: left;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    #vna-transit-guide .vna-step-trigger:hover {
+      border-color: var(--vna-deep-teal);
+      background-color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 104, 133, 0.05);
+    }
+
+    #vna-transit-guide .vna-step.active .vna-step-trigger {
+      border-color: var(--vna-deep-teal);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      background-color: #ffffff;
+    }
+
+    /* Step Title & ID Grouping */
+    #vna-transit-guide .vna-step-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    #vna-transit-guide .vna-step-num {
+      background-color: var(--vna-deep-teal);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-family: inherit;
+      transition: background-color 0.3s ease;
+    }
+
+    #vna-transit-guide .vna-step.active .vna-step-num {
+      background-color: var(--vna-lotus-gold);
+    }
+
+    #vna-transit-guide .vna-step-title-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #vna-transit-guide .vna-step-vn {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--vna-deep-teal);
+    }
+
+    #vna-transit-guide .vna-step.active .vna-step-vn {
+      color: var(--vna-deep-teal);
+    }
+
+    #vna-transit-guide .vna-step-en {
+      font-size: 13px;
+      color: #666666;
+      font-style: italic;
+      margin-top: 2px;
+    }
+
+    /* Chevron Indicator Icon */
+    #vna-transit-guide .vna-step-indicator {
+      width: 20px;
+      height: 20px;
+      fill: var(--vna-deep-teal);
+      transition: transform 0.3s ease;
+    }
+
+    #vna-transit-guide .vna-step.active .vna-step-indicator {
+      transform: rotate(180deg);
+      fill: var(--vna-lotus-gold);
+    }
+
+    /* Accordion Content Panel */
+    #vna-transit-guide .vna-panel {
+      max-height: 0;
+      overflow: hidden;
+      background-color: #ffffff;
+      border: 1px solid var(--vna-gray-border);
+      border-top: none;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #vna-transit-guide .vna-panel-inner {
+      padding: 0 20px 24px 20px;
+    }
+
+    /* Visual Content Container */
+    #vna-transit-guide .vna-visual-container {
+      position: relative;
+      background-color: var(--vna-teal-mist);
+      border: 1px solid rgba(0, 104, 133, 0.1);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 200px;
+    }
+
+    #vna-transit-guide .vna-visual-container img {
+      width: 100%;
+      height: auto;
+      max-height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Detailed Instruction Styling */
+    #vna-transit-guide .vna-instruction-block {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      border-top: 1px solid var(--vna-gray-border);
+      padding-top: 16px;
+    }
+
+    #vna-transit-guide .vna-step-en,
+    #vna-transit-guide .vna-instruction-column + .vna-instruction-column {
+      display: none;
+    }
+
+    #vna-transit-guide .vna-instruction-column {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    #vna-transit-guide .vna-lang-section {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #vna-transit-guide .vna-section-ln {
+      font-weight: 700;
+      color: var(--vna-deep-teal);
+      margin-bottom: 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #vna-transit-guide .vna-section-ln.en {
+      color: var(--vna-lotus-gold);
+    }
+
+    #vna-transit-guide .vna-text {
+      color: #333333;
+      margin: 0;
+    }
+
+    #vna-transit-guide .vna-bullet-list {
+      margin: 6px 0 0 0;
+      padding-left: 20px;
+    }
+
+    #vna-transit-guide .vna-bullet-list li {
+      margin-bottom: 6px;
+    }
+
+    #vna-transit-guide .vna-bullet-list li::marker {
+      color: var(--vna-deep-teal);
+    }
+
+    /* Utility Tips Callout */
+    #vna-transit-guide .vna-tip-box {
+      margin-top: 16px;
+      background-color: var(--vna-gold-bg);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    #vna-transit-guide .vna-tip-box svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--vna-lotus-gold);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    #vna-transit-guide .vna-tip-content {
+      color: #5c4308;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      #vna-transit-guide {
+        padding: 20px 16px;
+      }
+      #vna-transit-guide .vna-instruction-block {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      #vna-transit-guide .vna-step-vn {
+        font-size: 14px;
+      }
+      #vna-transit-guide .vna-step-en {
+        font-size: 12px;
+      }
+    }
+  </style>
+
+  <!-- HTML Structure -->
+  <div class="vna-header">
+    <div class="vna-header-left">
+      <button class="vna-back-btn" id="iiBackBtn" type="button" onclick="goBackPage()">← Quay lại</button>
+      <div class="vna-header-brand">
+        <span class="vna-airline-name">Vietnam Airlines</span>
+        <h2 class="vna-title" id="iiTitle">H&#431;&#7898;NG D&#7850;N N&#7888;I CHUY&#7870;N QU&#7888;C T&#7870;</h2>
+      </div>
+    </div>
+    <span class="vna-badge" id="iiBadge">T2 - N&#7897;i B&#224;i</span>
+  </div>
+
+  <div class="vna-airport-banner">
+    <h3 class="vna-banner-title">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      <span id="iiBannerTitle">Quy trình nối chuyến Quốc tế - Quốc tế (Nhà ga T2)</span>
+    </h3>
+    <p class="vna-banner-text" id="iiBannerText">
+      H&#432;&#7899;ng d&#7851;n chi ti&#7871;t d&#224;nh cho h&#224;nh kh&#225;ch bay t&#7915; c&#225;c &#273;i&#7875;m &#273;&#7871;n qu&#7889;c t&#7871;, n&#7889;i chuy&#7871;n &#273;i ti&#7871;p qu&#7889;c t&#7871; (Int-to-Int) qua Nh&#224; ga h&#224;nh kh&#225;ch T2 - S&#226;n bay Qu&#7889;c t&#7871; N&#7897;i B&#224;i.
+    </p>
+  </div>
+
+  <div class="vna-timeline">
+
+    <!-- STEP 1 -->
+    <div class="vna-step active">
+      <div class="vna-node"></div>
+      <button class="vna-step-trigger" aria-expanded="true">
+        <div class="vna-step-header">
+          <span class="vna-step-num">01</span>
+          <div class="vna-step-title-group">
+            <span class="vna-step-vn" id="iiStepTitle1">B&#432;&#7899;c 1: Kh&#225;ch v&#224;o nh&#224; ga</span>
+          </div>
+        </div>
+        <svg class="vna-step-indicator" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div class="vna-panel">
+        <div class="vna-panel-inner">
+          <div class="vna-visual-container">
+            <!-- Inline vector blueprint to display on failure of missing images -->
+            <img src="D:\Smartway\bục hỗ trợ nối chuyến t2.jpg" alt="Bục hỗ trợ nối chuyến">
+          </div>
+          <div class="vna-instruction-block">
+            <div class="vna-instruction-column">
+              <div class="vna-lang-section">
+                <span class="vna-section-ln" id="iiLabel1">H&#432;&#7899;ng d&#7851;n</span>
+                <p class="vna-text" id="iiText1">Sau khi m&#225;y bay h&#7841; c&#225;nh v&#224; c&#7853;p &#7889;ng l&#7891;ng/xe bu&#253;t, qu&#253; kh&#225;ch di chuy&#7875;n theo h&#224;nh lang ga &#273;&#7871;n t&#7841;i t&#7847;ng 2 c&#7911;a Nh&#224; ga T2. C&#243; b&#7909;c h&#7895; tr&#7907; n&#7889;i chuy&#7871;n c&#7911;a Vietnam Airlines (&#7842;nh)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="vna-step">
+      <div class="vna-node"></div>
+      <button class="vna-step-trigger" aria-expanded="false">
+        <div class="vna-step-header">
+          <span class="vna-step-num">02</span>
+          <div class="vna-step-title-group">
+            <span class="vna-step-vn" id="iiStepTitle2">B&#432;&#7899;c 2: V&#224;o qu&#7847;y transfer</span>
+          </div>
+        </div>
+        <svg class="vna-step-indicator" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div class="vna-panel">
+        <div class="vna-panel-inner">
+          <div class="vna-visual-container">
+            <img src="D:\Smartway\Quầy transfer-1.jpg" alt="Quầy transfer">
+          </div>
+          <div class="vna-instruction-block">
+            <div class="vna-instruction-column">
+              <div class="vna-lang-section">
+                <span class="vna-section-ln" id="iiLabel2">H&#432;&#7899;ng d&#7851;n</span>
+                <p class="vna-text" id="iiText2">&#272;a s&#7889; h&#224;nh kh&#225;ch &#273;&#227; &#273;&#432;&#7907;c l&#224;m th&#7911; t&#7909;c (check-in) th&#7859;ng t&#7899;i &#273;i&#7875;m &#273;&#7871;n cu&#7889;i c&#249;ng. Tuy nhi&#234;n, qu&#253; kh&#225;ch vui l&#242;ng li&#234;n h&#7879; Qu&#7847;y N&#7889;i chuy&#7871;n (Transfer Counter) &#273;&#7875; &#273;&#432;&#7907;c nh&#226;n vi&#234;n h&#7895; tr&#7907; n&#7871;u thu&#7897;c c&#225;c tr&#432;&#7901;ng h&#7907;p sau:</p>
+                <ul class="vna-bullet-list" id="iiList2">
+                  <li>Ch&#432;a &#273;&#432;&#7907;c c&#7845;p th&#7867; l&#234;n m&#225;y bay (boarding pass) cho ch&#7863;ng bay ti&#7871;p theo.</li>
+                  <li>C&#7847;n ki&#7875;m tra v&#224; x&#225;c nh&#7853;n l&#7841;i t&#236;nh tr&#7841;ng h&#224;nh l&#253; k&#253; g&#7917;i.</li>
+                  <li>C&#7847;n x&#225;c minh t&#237;nh h&#7907;p l&#7879; c&#7911;a th&#7883; th&#7921;c (visa) v&#224; gi&#7845;y t&#7901; nh&#7853;p c&#7843;nh t&#7841;i &#273;i&#7875;m &#273;&#7871;n cu&#7889;i c&#249;ng.</li>
+                  <li>C&#225;c th&#244;ng tin c&#7853;p nh&#7853;t kh&#225;c,...</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="vna-tip-box">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            <div class="vna-tip-content">
+              <strong id="iiTipLabel">L&#432;u &#253; h&#224;nh l&#253;:</strong> <span id="iiTipText">H&#224;nh l&#253; k&#253; g&#7917;i th&#244;ng th&#432;&#7901;ng s&#7869; t&#7921; &#273;&#7897;ng chuy&#7875;n th&#7859;ng &#273;&#7871;n &#273;&#237;ch cu&#7889;i c&#249;ng. Qu&#253; kh&#225;ch vui l&#242;ng x&#225;c nh&#7853;n l&#7841;i tr&#7841;ng th&#225;i th&#7867; h&#224;nh l&#253; v&#7899;i nh&#226;n vi&#234;n t&#7841;i qu&#7847;y.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <div class="vna-step">
+      <div class="vna-node"></div>
+      <button class="vna-step-trigger" aria-expanded="false">
+        <div class="vna-step-header">
+          <span class="vna-step-num">03</span>
+          <div class="vna-step-title-group">
+            <span class="vna-step-vn" id="iiStepTitle3">B&#432;&#7899;c 3: C&#244;ng an c&#7917;a kh&#7849;u ki&#7875;m tra</span>
+          </div>
+        </div>
+        <svg class="vna-step-indicator" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div class="vna-panel">
+        <div class="vna-panel-inner">
+          <div class="vna-visual-container">
+
+            <img src="D:\Smartway\Imigration control-1.jpg" alt="Immigration point">
+
+          </div>
+          <div class="vna-instruction-block">
+            <div class="vna-instruction-column">
+              <div class="vna-lang-section">
+                <span class="vna-section-ln" id="iiLabel3">H&#432;&#7899;ng d&#7851;n</span>
+                <p class="vna-text" id="iiText3">Qu&#253; kh&#225;ch x&#7871;p h&#224;ng &#273;i qua khu v&#7921;c ki&#7875;m so&#225;t gi&#7845;y t&#7901; n&#7889;i chuy&#7871;n &#273;&#7897;c l&#7853;p c&#7911;a C&#244;ng an c&#7917;a kh&#7849;u n&#7857;m li&#7873;n k&#7873; ngay b&#234;n c&#7841;nh qu&#7847;y chuy&#7875;n ti&#7871;p h&#224;nh tr&#236;nh. Chu&#7849;n b&#7883; s&#7861;n h&#7897; chi&#7871;u g&#7889;c v&#224; th&#7867; l&#234;n m&#225;y bay h&#7907;p l&#7879;.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <div class="vna-step">
+      <div class="vna-node"></div>
+      <button class="vna-step-trigger" aria-expanded="false">
+        <div class="vna-step-header">
+          <span class="vna-step-num">04</span>
+          <div class="vna-step-title-group">
+            <span class="vna-step-vn" id="iiStepTitle4">B&#432;&#7899;c 4: Ki&#7875;m tra an ninh</span>
+          </div>
+        </div>
+        <svg class="vna-step-indicator" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div class="vna-panel">
+        <div class="vna-panel-inner">
+          <div class="vna-visual-container">
+            
+            <img src="D:\Smartway\Security checkpoint1.jpg" alt="Security checkpoint">
+
+          </div>
+          <div class="vna-instruction-block">
+            <div class="vna-instruction-column">
+              <div class="vna-lang-section">
+                <span class="vna-section-ln" id="iiLabel4">H&#432;&#7899;ng d&#7851;n</span>
+                <p class="vna-text" id="iiText4">&#272;i theo l&#7889;i c&#7847;u thang cu&#7889;n &#273;i b&#7897; l&#234;n t&#7847;ng 3 v&#224; &#273;i tr&#7921;c ti&#7871;p v&#224;o khu v&#7921;c soi chi&#7871;u an ninh h&#224;ng kh&#244;ng d&#224;nh cho kh&#225;ch qu&#225; c&#7843;nh.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="vna-step">
+      <div class="vna-node"></div>
+      <button class="vna-step-trigger" aria-expanded="false">
+        <div class="vna-step-header">
+          <span class="vna-step-num">05</span>
+          <div class="vna-step-title-group">
+            <span class="vna-step-vn" id="iiStepTitle5">B&#432;&#7899;c 5: Ra c&#7917;a kh&#7903;i h&#224;nh</span>
+          </div>
+        </div>
+        <svg class="vna-step-indicator" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div class="vna-panel">
+        <div class="vna-panel-inner">
+          <div class="vna-visual-container">
+            <img src="D:\Smartway\gate boarding t2.jpg" alt="Mô tả">
+          </div>
+          <div class="vna-instruction-block">
+            <div class="vna-instruction-column">
+              <div class="vna-lang-section">
+                <span class="vna-section-ln" id="iiLabel5">H&#432;&#7899;ng d&#7851;n</span>
+                <p class="vna-text" id="iiText5">Sau khi ki&#7875;m tra an ninh, qu&#253; kh&#225;ch v&#224;o ph&#242;ng ch&#7901; qu&#7889;c t&#7871; t&#7847;ng 3. C&#7917;a kh&#7903;i h&#224;nh c&#7911;a chuy&#7871;n bay l&#224;: <strong id="iiGateValue">TBA</strong>. Xin l&#432;u &#253;, c&#7917;a kh&#7903;i h&#224;nh (boarding gate) s&#7869; &#273;&#243;ng c&#7917;a tr&#432;&#7899;c 15 ph&#250;t so v&#7899;i gi&#7901; kh&#7903;i h&#224;nh d&#7921; ki&#7871;n.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Vanilla Interaction Script (Self-Contained) -->
+  <script>
+    function goBackPage() {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      if (document.referrer) {
+        window.location.href = document.referrer;
+        return;
+      }
+      window.location.href = 'Smartway%201.9.html';
+    }
+
+    function getQueryParam(name) {
+      var params = new URLSearchParams(window.location.search || '');
+      return params.get(name) || '';
+    }
+
+    var iiTranslations = {
+      vi: {
+        back: '← Quay lại',
+        title: 'HƯỚNG DẪN NỐI CHUYẾN QUỐC TẾ',
+        badge: 'T2 - Nội Bài',
+        bannerTitle: 'Quy trình nối chuyến Quốc tế - Quốc tế (Nhà ga T2)',
+        bannerText: 'Hướng dẫn chi tiết dành cho hành khách bay từ các điểm đến quốc tế, nối chuyến đi tiếp quốc tế qua Nhà ga hành khách T2 - Sân bay Quốc tế Nội Bài.',
+        sectionLabel: 'Hướng dẫn',
+        stepTitle1: 'Bước 1: Khách vào nhà ga',
+        stepText1: 'Sau khi máy bay hạ cánh và cập ống lồng/xe buýt, quý khách di chuyển theo hành lang ga đến tại tầng 2 của Nhà ga T2. Có bục hỗ trợ nối chuyến của Vietnam Airlines (Ảnh).',
+        stepTitle2: 'Bước 2: Vào quầy nối chuyến',
+        stepText2: 'Đa số hành khách đã được làm thủ tục (check-in) thẳng tới điểm đến cuối cùng. Tuy nhiên, quý khách vui lòng liên hệ Quầy Nối chuyến (Transfer Counter) để được nhân viên hỗ trợ nếu thuộc các trường hợp sau:',
+        stepList2: [
+          'Chưa được cấp thẻ lên máy bay (boarding pass) cho chặng bay tiếp theo.',
+          'Cần kiểm tra và xác nhận lại tình trạng hành lý ký gửi.',
+          'Cần xác minh tính hợp lệ của thị thực (visa) và giấy tờ nhập cảnh tại điểm đến cuối cùng.',
+          'Các thông tin cập nhật khác,...'
+        ],
+        tipLabel: 'Lưu ý hành lý:',
+        tipText: 'Hành lý ký gửi thông thường sẽ tự động chuyển thẳng đến đích cuối cùng. Quý khách vui lòng xác nhận lại trạng thái thẻ hành lý với nhân viên tại quầy.',
+        stepTitle3: 'Bước 3: Công an cửa khẩu kiểm tra',
+        stepText3: 'Quý khách xếp hàng đi qua khu vực kiểm soát giấy tờ nối chuyến độc lập của Công an cửa khẩu nằm liền kề ngay bên cạnh quầy chuyển tiếp hành trình. Chuẩn bị sẵn hộ chiếu gốc và thẻ lên máy bay hợp lệ.',
+        stepTitle4: 'Bước 4: Kiểm tra an ninh',
+        stepText4: 'Đi theo lối cầu thang cuốn đi bộ lên tầng 3 và đi trực tiếp vào khu vực soi chiếu an ninh hàng không dành cho khách quá cảnh.',
+        stepTitle5: 'Bước 5: Ra cửa khởi hành',
+        stepText5: 'Sau khi kiểm tra an ninh, quý khách vào phòng chờ quốc tế tầng 3. Cửa khởi hành của chuyến bay là: <strong id="iiGateValue">{gate}</strong>. Xin lưu ý, cửa khởi hành (boarding gate) sẽ đóng cửa trước 15 phút so với giờ khởi hành dự kiến.'
+      },
+      en: {
+        back: '← Back',
+        title: 'INTERNATIONAL TRANSIT GUIDE',
+        badge: 'T2 - Noi Bai',
+        bannerTitle: 'International-to-International Transit Flow (Terminal T2)',
+        bannerText: 'Detailed guidance for passengers arriving on international flights and connecting onward to another international flight via Terminal T2 at Noi Bai International Airport.',
+        sectionLabel: 'Instructions',
+        stepTitle1: 'Step 1: Enter the terminal',
+        stepText1: 'After landing and arriving via jet bridge or shuttle bus, please proceed along the arrivals corridor on Level 2 of Terminal T2. A Vietnam Airlines transit support counter is available here (Photo).',
+        stepTitle2: 'Step 2: Go to the transfer counter',
+        stepText2: 'Most passengers have already been checked through to their final destination. However, please contact the Transfer Counter for assistance if you fall into one of the following cases:',
+        stepList2: [
+          'You have not been issued a boarding pass for the next flight segment.',
+          'You need to check and reconfirm the status of your checked baggage.',
+          'You need to verify the validity of your visa and entry documents for the final destination.',
+          'Other updated travel information, etc.'
+        ],
+        tipLabel: 'Baggage note:',
+        tipText: 'Checked baggage is usually transferred automatically to the final destination. Please confirm the baggage tag status with the staff at the counter.',
+        stepTitle3: 'Step 3: Immigration clearance',
+        stepText3: 'Queue at the dedicated transit document checkpoint operated by the immigration authority, located right next to the transfer counter. Please have your original passport and valid boarding pass ready.',
+        stepTitle4: 'Step 4: Security screening',
+        stepText4: 'Take the escalator up to Level 3 and proceed directly to the transit security screening area.',
+        stepTitle5: 'Step 5: Proceed to the boarding gate',
+        stepText5: 'After passing security screening, please proceed to the international departure lounge on Level 3. Your boarding gate is: <strong id="iiGateValue">{gate}</strong>. Please note that the boarding gate closes 15 minutes before the scheduled departure time.'
+      },
+      zh: {
+        back: '← 返回',
+        title: '国际中转指引',
+        badge: 'T2 - 内排',
+        bannerTitle: '国际转国际中转流程（T2航站楼）',
+        bannerText: '适用于从国际航班抵达并继续转乘国际航班，经内排国际机场T2航站楼中转的旅客详细指引。',
+        sectionLabel: '指引',
+        stepTitle1: '步骤1：进入航站楼',
+        stepText1: '飞机降落并停靠廊桥或摆渡车后，请沿到达通道前往T2航站楼二层。此处设有越南航空中转协助柜台（图片）。',
+        stepTitle2: '步骤2：前往中转柜台',
+        stepText2: '大多数旅客已直接办理值机至最终目的地。但如属于以下情况，请联系中转柜台（Transfer Counter）寻求工作人员协助：',
+        stepList2: [
+          '尚未领取下一段航班的登机牌。',
+          '需要检查并确认托运行李状态。',
+          '需要确认最终目的地签证及入境文件是否有效。',
+          '其他最新出行信息等。'
+        ],
+        tipLabel: '行李提示：',
+        tipText: '托运行李通常会自动转运至最终目的地。请在柜台向工作人员再次确认行李牌状态。',
+        stepTitle3: '步骤3：接受边检检查',
+        stepText3: '请在紧邻中转柜台的独立中转证件检查区域排队，提前准备好护照原件和有效登机牌。',
+        stepTitle4: '步骤4：安全检查',
+        stepText4: '请乘自动扶梯步行至三层，并直接前往中转旅客专用安检区域。',
+        stepTitle5: '步骤5：前往登机口',
+        stepText5: '通过安检后，请前往三层国际候机厅。您的登机口为：<strong id="iiGateValue">{gate}</strong>。请注意，登机口将在预计起飞时间前15分钟关闭。'
+      },
+      ja: {
+        back: '← 戻る',
+        title: '国際線乗り継ぎガイド',
+        badge: 'T2 - ノイバイ',
+        bannerTitle: '国際線-国際線 乗り継ぎ案内（T2ターミナル）',
+        bannerText: 'ノイバイ国際空港T2ターミナルで、国際線から国際線へ乗り継ぐお客様向けの詳細案内です。',
+        sectionLabel: 'ご案内',
+        stepTitle1: 'ステップ1：ターミナルへ移動',
+        stepText1: '飛行機がボーディングブリッジまたはバスに到着後、T2ターミナル2階の到着動線に沿ってお進みください。ベトナム航空の乗り継ぎサポートカウンターがあります（写真）。',
+        stepTitle2: 'ステップ2：乗り継ぎカウンターへ',
+        stepText2: '多くのお客様は最終目的地まで通しでチェックイン済みです。ただし、以下の場合は乗り継ぎカウンター（Transfer Counter）でスタッフのサポートを受けてください。',
+        stepList2: [
+          '次の区間の搭乗券がまだ発行されていない場合。',
+          '受託手荷物の状況確認が必要な場合。',
+          '最終目的地で必要なビザおよび入国書類の有効性確認が必要な場合。',
+          'その他の最新案内が必要な場合。'
+        ],
+        tipLabel: '手荷物のご案内：',
+        tipText: '受託手荷物は通常、最終目的地まで自動的に転送されます。手荷物タグの状態をカウンターでスタッフにご確認ください。',
+        stepTitle3: 'ステップ3：出入国審査',
+        stepText3: '乗り継ぎカウンターのすぐ隣にある専用の乗り継ぎ書類確認エリアにお並びください。パスポート原本と有効な搭乗券をご準備ください。',
+        stepTitle4: 'ステップ4：保安検査',
+        stepText4: 'エスカレーターで3階へ上がり、そのまま乗り継ぎ旅客専用の保安検査場へお進みください。',
+        stepTitle5: 'ステップ5：搭乗口へ移動',
+        stepText5: '保安検査後、3階の国際線待合エリアへお進みください。ご搭乗口は <strong id="iiGateValue">{gate}</strong> です。搭乗口は出発予定時刻の15分前に閉まりますのでご注意ください。'
+      },
+      ko: {
+        back: '← 뒤로',
+        title: '국제선 환승 안내',
+        badge: 'T2 - 노이바이',
+        bannerTitle: '국제선-국제선 환승 안내 (T2 터미널)',
+        bannerText: '노이바이 국제공항 T2 터미널에서 국제선 도착 후 다른 국제선으로 환승하는 승객을 위한 상세 안내입니다.',
+        sectionLabel: '안내',
+        stepTitle1: '1단계: 터미널로 이동',
+        stepText1: '항공기 도착 후 탑승교 또는 셔틀버스를 이용해 T2 터미널 2층 도착 동선을 따라 이동해 주세요. 이곳에 베트남항공 환승 지원 카운터가 있습니다(사진).',
+        stepTitle2: '2단계: 환승 카운터로 이동',
+        stepText2: '대부분의 승객은 최종 목적지까지 연결 체크인이 이미 완료되어 있습니다. 다만 아래 경우에는 환승 카운터(Transfer Counter)에서 직원의 안내를 받으시기 바랍니다.',
+        stepList2: [
+          '다음 구간 탑승권을 아직 받지 못한 경우.',
+          '위탁수하물 상태를 확인하고 재확인해야 하는 경우.',
+          '최종 목적지의 비자 및 입국 서류 유효성 확인이 필요한 경우.',
+          '기타 최신 안내가 필요한 경우.'
+        ],
+        tipLabel: '수하물 안내:',
+        tipText: '위탁수하물은 일반적으로 최종 목적지까지 자동으로 연결됩니다. 카운터에서 직원에게 수하물 태그 상태를 다시 확인해 주세요.',
+        stepTitle3: '3단계: 출입국 심사',
+        stepText3: '환승 카운터 바로 옆에 있는 전용 환승 서류 확인 구역에서 줄을 서 주시고, 여권 원본과 유효한 탑승권을 준비해 주세요.',
+        stepTitle4: '4단계: 보안 검색',
+        stepText4: '에스컬레이터를 이용해 3층으로 올라간 뒤 환승 승객 전용 보안 검색 구역으로 바로 이동해 주세요.',
+        stepTitle5: '5단계: 탑승구로 이동',
+        stepText5: '보안 검색 후 3층 국제선 대합실로 이동해 주세요. 탑승구는 <strong id="iiGateValue">{gate}</strong> 입니다. 탑승구는 예정 출발 시각 15분 전에 닫히니 유의해 주세요.'
+      }
+    };
+
+    function applyIITranslations(lang, gate) {
+      var pack = iiTranslations[lang] || iiTranslations.vi;
+      var label = pack.sectionLabel;
+      var list2 = (pack.stepList2 || []).map(function(item) { return '<li>' + item + '</li>'; }).join('');
+      document.getElementById('iiBackBtn').textContent = pack.back;
+      document.getElementById('iiTitle').textContent = pack.title;
+      document.getElementById('iiBadge').textContent = pack.badge;
+      document.getElementById('iiBannerTitle').textContent = pack.bannerTitle;
+      document.getElementById('iiBannerText').textContent = pack.bannerText;
+      document.getElementById('iiStepTitle1').textContent = pack.stepTitle1;
+      document.getElementById('iiStepTitle2').textContent = pack.stepTitle2;
+      document.getElementById('iiStepTitle3').textContent = pack.stepTitle3;
+      document.getElementById('iiStepTitle4').textContent = pack.stepTitle4;
+      document.getElementById('iiStepTitle5').textContent = pack.stepTitle5;
+      document.getElementById('iiLabel1').textContent = label;
+      document.getElementById('iiLabel2').textContent = label;
+      document.getElementById('iiLabel3').textContent = label;
+      document.getElementById('iiLabel4').textContent = label;
+      document.getElementById('iiLabel5').textContent = label;
+      document.getElementById('iiText1').textContent = pack.stepText1;
+      document.getElementById('iiText2').textContent = pack.stepText2;
+      document.getElementById('iiList2').innerHTML = list2;
+      document.getElementById('iiTipLabel').textContent = pack.tipLabel;
+      document.getElementById('iiTipText').textContent = pack.tipText;
+      document.getElementById('iiText3').textContent = pack.stepText3;
+      document.getElementById('iiText4').textContent = pack.stepText4;
+      document.getElementById('iiText5').innerHTML = pack.stepText5.replace('{gate}', gate || 'TBA');
+    }
+
+    (function() {
+      const container = document.getElementById('vna-transit-guide');
+      if (!container) return;
+
+      var lang = getQueryParam('lang') || 'vi';
+      var gateValue = getQueryParam('gate') || 'TBA';
+      applyIITranslations(lang, gateValue);
+
+      const steps = container.querySelectorAll('.vna-step');
+
+      // Initialize the default open section
+      steps.forEach(step => {
+        const panel = step.querySelector('.vna-panel');
+        if (step.classList.contains('active')) {
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+        } else {
+          panel.style.maxHeight = '0px';
+        }
+      });
+
+      container.addEventListener('click', function(e) {
+        const trigger = e.target.closest('.vna-step-trigger');
+        if (!trigger) return;
+
+        const currentStep = trigger.closest('.vna-step');
+        if (!currentStep) return;
+
+        const currentPanel = currentStep.querySelector('.vna-panel');
+        const isActive = currentStep.classList.contains('active');
+
+        // Close other open steps for smooth UX
+        steps.forEach(step => {
+          if (step !== currentStep && step.classList.contains('active')) {
+            step.classList.remove('active');
+            const panel = step.querySelector('.vna-panel');
+            panel.style.maxHeight = '0px';
+            step.querySelector('.vna-step-trigger').setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Toggle the clicked step
+        if (isActive) {
+          currentStep.classList.remove('active');
+          currentPanel.style.maxHeight = '0px';
+          trigger.setAttribute('aria-expanded', 'false');
+        } else {
+          currentStep.classList.add('active');
+          currentPanel.style.maxHeight = currentPanel.scrollHeight + 'px';
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      // Handle structural content updates gracefully (e.g. dynamic resizing window)
+      window.addEventListener('resize', function() {
+        steps.forEach(step => {
+          if (step.classList.contains('active')) {
+            const panel = step.querySelector('.vna-panel');
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+          }
+        });
+      });
+    })();
+  </script>
+</div>

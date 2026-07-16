@@ -1,0 +1,74 @@
+**PASSENGER PNR LIST**                                    
+       
+
+--- TST RLR RLP DCS ---                                            
+RP/HANVN2109/HANVN2109            NH/SU  26JUN26/1651Z   D45CQM    
+  1.HOANG/THI NHU QUYNH MRS(ADT)   2.NGUYEN/BAO NHI MS(ADT)        
+  3  VN 310 J 27JUN 6 HANNRT HK2 B     2  0025 0735   *1A/E*       
+  4  VN 335 J 15JUL 7 KIXHAN HK2       1  1000 1300   *1A/E*       
+  5 AP 84912105115/P1                                              
+  6 AP HAN 842438245116 - VN AGT JTB TNT - A/P2                    
+
+RP/TYOJA2503/TYOJA2503            NH/SU  26JUN26/1651Z   F9AN8A           
+  1.ENDO/YASUYUKIMR                                                       
+  2  VN 385 J 16JUL 7 HNDHAN  HK1  1    1710  2030                                 
+  3  VN 19 C 16JUL 6 HANCDG HK1 B     2  2340 +0735   *1A/E*              
+  4 AP TYO 03-6261-2787 KOKUSAI SVC AGCY SUDO NINOMIYA-A                  
+  5 TK OK16JUN/TYOJA2503//ETVN                                            
+
+RP/HANVN2120/HANVN2120            NA/SU  26JUN26/1707Z   FSUMDC            
+  1.NGUYEN/THI HAU MRS                                                     
+  2.VO/NGUYEN BINH MINH MSTR(CHD/31OCT14)                                  
+  3  VN 310 C 03JUL 6 HANNRT HK2 B     2  0025 0735   *1A/E*               
+  4  VN 385 D 16JUL 7 HNDHAN HK2       3  1635 2005   *1A/E*               
+  5 APE RES5@ASIAWINGSTRAVEL.COM                                           
+  6 APM 84912246554                                                        
+  7 TK PAX OK25JUN/HANVN2120//ETVN/S3-4/P1-2    
+
+
+--- TST RLR MSC RLP DCS ---                                              
+RP/NGOJA2376/NGOJA2376            PG/GS  27JUN26/0003Z   FIPZF9          
+  1.TOBITA/MASANORI MR(ADT)   2.TOBITA/YOSHIKO MS(ADT)                   
+  3  VN 311 R 27JUN 6 NRTHAN HK2 B     1  0930 1310   *1A/E*             
+  4  VN1561 R 27JUN 6 HANCXR HK2 A     1  1520 1720   *1A/E*             
+  5  VN6151 P 03JUL 5 CXRSGN HK2       1  2055 2205   *1A/E*             
+  6  VN 306 P 04JUL 6 SGNNRT HK2       2  0020 0800   *1A/E*             
+  7 APM SECURED DATA                                                     
+  8 TK PAX OK30APR/NGOJA28AR//ETVN/S3-6/P2                                                          
+
+RP/HDQ1F/HDQ1FCCOZTF/V416/1630144        27JUN26/0002Z   EREUUN  
+  1.ARIZUKA/MINAMIMS   2.ISHIWATA/YURAMS   3.SUENO/HARUNAMS      
+  4.SUZUKI/AIRIMS                                                
+  5  VN 311 E 27JUN 6 NRTHAN HK4 B     1  0930 1310   *1A/E*     
+  6  VN 179 E 27JUN 6 HANDAD HK4 A     1  2305 0030   *1A/E*     
+  7  VN7164 E 03JUL 2 DADHAN HK4       1  2035 2155   *1A/E*     
+  8  VN 310 E 04JUL 3 HANNRT HK4       2  0025 0735   *1A/E*     
+  9 APE WATAWATA223@ICLOUD.COM                                   
+ 10 APN SECURED DATA/P2                                          
+
+ RP/HDQ1S/HDQ1SHZAXAJ/C73B/1720846        29JUN26/1137Z  AKLM12 	          
+  1.AVARI/SALEENA JEHANGIR MS(INF/ROZITAROYA/04AUG24)                    
+  2.AVARI/YAZDYAR KOBAD MR                                               
+  3  VN 056 P 14JUN 7 LHRHAN         FLWN                                
+  4  VN 334 P 16JUN 2 HANKIX         FLWN                                
+  5  VN 311 T 03JUL 2 NRTHAN HK2 A     1  0930 1310   *1A/E*             
+  6  VN 179 T 03JUL 2 HANDAD HK2 A     1  1605 1730   *1A/E*             
+  7  VN 156 E 15JUL 1 DADHAN HK2       1  0605 0730   *1A/E*             
+  8  VN 055 T 15JUL 1 HANLHR HK2       2  1005 1705   *1A/E*             
+  9 APN SECURED DATA/P1                                                  
+ 10 APN SECURED DATA/P1                                                  
+ 11 TK OK30APR/HANVN0ERS
+
+
+
+  --- TST RLR MSC RLP DCS ---                                                  
+RP/HANVN08CP/HANVN08CP            AS/SU  29JUN26/1548Z   EK2UU6              
+  1.NGUYEN/HUU THANH MR(ADT/11AUG95)                                         
+  2  VN 311 T 13JUL 2 NRTHAN HK1 A     1  0930 1310   *1A/E*                 
+  3  VN1717 T 14JUL 2 HANVII HK1 A     1  1720 1815   *1A/E*                 
+  4  VN1718 R 07AUG 5 VIIHAN HK1          1850 1945   *1A/E*                 
+  5  VN 310 R 08AUG 6 HANNRT HK1       2  0025 0735   *1A/E*                 
+  6 APE HUUTHANH11895@GMAIL.COM                                              
+  7 APE HUUTHANH11895@GMAIL.COM                                              
+  8 APM 84388112881                                                          
+  9 APM 817084647803-H
