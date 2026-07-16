@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Quản lý Thông báo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+      color: #005A8C;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    
+    .form-section {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      border: 2px solid #e9ecef;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #005A8C;
+      font-size: 14px;
+    }
+    
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+    
+    input[type="text"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #BFA15F;
+      box-shadow: 0 0 5px rgba(191, 161, 95, 0.3);
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .row-full {
+      grid-column: 1 / -1;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .btn-primary {
+      background: #BFA15F;
+      color: white;
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .btn-primary:hover {
+      background: #a88d50;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(191, 161, 95, 0.3);
+    }
+    
+    .btn-secondary {
+      background: #e9ecef;
+      color: #495057;
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .btn-secondary:hover {
+      background: #dee2e6;
+    }
+    
+    .status-message {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+    }
+    
+    .status-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      display: block;
+    }
+    
+    .status-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      display: block;
+    }
+    
+    .notifications-list {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 12px;
+      border: 2px solid #e9ecef;
+    }
+    
+    .notifications-list h2 {
+      color: #005A8C;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    
+    .notification-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border-left: 4px solid #BFA15F;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .notification-info {
+      flex: 1;
+    }
+    
+    .notification-pnr {
+      font-weight: bold;
+      color: #005A8C;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+    
+    .notification-content {
+      color: #666;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    
+    .notification-meta {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 5px;
+    }
+    
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    
+    .btn-delete:hover {
+      background: #c82333;
+    }
+    
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>
+      🔥 Admin - Quản lý Thông báo
+    </h1>
+    <p class="subtitle">Gửi thông báo realtime cho khách hàng VNA</p>
+    
+    <div id="statusMessage" class="status-message"></div>
+    
+    <div class="form-section">
+      <h3 style="color: #005A8C; margin-bottom: 20px;">📤 Tạo Thông báo Mới</h3>
+      
+      <div class="row">
+        <div>
+          <div class="form-group">
+            <label for="pnrInput">👤 PNR / Booking Code (bắt buộc)</label>
+            <input type="text" id="pnrInput" placeholder="VD: D45CQM" maxlength="10" style="text-transform: uppercase;">
+          </div>
+        </div>
+        
+        <div>
+          <div class="form-group">
+            <label for="langInput">🌐 Ngôn ngữ (bắt buộc)</label>
+            <select id="langInput">
+              <option value="vi">🇻🇳 Tiếng Việt</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="zh">🇨🇳 中文</option>
+              <option value="ja">🇯🇵 日本語</option>
+              <option value="ko">🇰🇷 한국어</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="titleInput">📌 Tiêu đề (bắt buộc)</label>
+        <input type="text" id="titleInput" placeholder="VD: ⚠️ Cập nhật chuyến bay">
+      </div>
+      
+      <div class="form-group">
+        <label for="bodyInput">📝 Nội dung (bắt buộc)</label>
+        <textarea id="bodyInput" placeholder="VD: Cửa khởi hành của bạn đã thay đổi từ cửa 26 sang cửa 28. Vui lòng di chuyển đến cửa mới."></textarea>
+      </div>
+      
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="sendNotification()">📤 Gửi Thông báo</button>
+        <button class="btn btn-secondary" onclick="clearForm()">🔄 Xóa Form</button>
+      </div>
+    </div>
+    
+    <div class="notifications-list">
+      <h2>📋 Danh sách Thông báo gần đây</h2>
+      <div id="notificationsList"></div>
+    </div>
+  </div>
+
+  <script>
+    // API Server URL - same port as web app
+    const API_URL = '/api/notifications';
+    
+    // Load and display notifications from API
+    async function loadNotifications() {
+      try {
+        const response = await fetch(API_URL);
+        const notifications = await response.json();
+        const list = document.getElementById('notificationsList');
+        
+        if (notifications.length === 0) {
+          list.innerHTML = '<div class="empty-state">Chưa có thông báo nào</div>';
+          return;
+        }
+        
+        // Sort by timestamp descending
+        notifications.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        
+        // Show last 20
+        list.innerHTML = notifications.slice(0, 20).map((notif, index) => `
+          <div class="notification-item">
+            <div class="notification-info">
+              <div class="notification-pnr">📌 PNR: ${notif.pnr}</div>
+              <div class="notification-content">
+                <strong>${notif.title}</strong><br>
+                ${notif.body}
+              </div>
+              <div class="notification-meta">
+                🌐 ${getLangName(notif.lang)} | ⏰ ${new Date(notif.timestamp).toLocaleString('vi-VN')}
+              </div>
+            </div>
+            <button class="btn-delete" onclick="deleteNotification('${notif.pnr}', ${index})">🗑️ Xóa</button>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error loading notifications:', error);
+        document.getElementById('notificationsList').innerHTML = '<div class="empty-state">❌ Lỗi tải dữ liệu</div>';
+      }
+    }
+    
+    function getLangName(code) {
+      const langs = { vi: '🇻🇳 Tiếng Việt', en: '🇬🇧 English', zh: '🇨🇳 中文', ja: '🇯🇵 日本語', ko: '🇰🇷 한국어' };
+      return langs[code] || code;
+    }
+    
+    async function sendNotification() {
+      const pnr = document.getElementById('pnrInput').value.toUpperCase().trim();
+      const lang = document.getElementById('langInput').value;
+      const title = document.getElementById('titleInput').value.trim();
+      const body = document.getElementById('bodyInput').value.trim();
+      
+      // Validation
+      if (!pnr || !title || !body) {
+        showStatus('❌ Vui lòng điền đầy đủ thông tin', false);
+        return;
+      }
+      
+      if (pnr.length < 3) {
+        showStatus('❌ PNR phải có ít nhất 3 ký tự', false);
+        return;
+      }
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pnr,
+            lang,
+            title,
+            body
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showStatus(`✅ Đã gửi thông báo cho PNR: ${pnr}`, true);
+          clearForm();
+          loadNotifications();
+        } else {
+          showStatus('❌ Lỗi gửi thông báo: ' + result.error, false);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showStatus('❌ Lỗi kết nối API: ' + error.message, false);
+      }
+    }
+    
+    async function deleteNotification(pnr, index) {
+      if (!confirm('Bạn chắc chắn muốn xóa thông báo này?')) return;
+      
+      try {
+        const response = await fetch(`${API_URL}/delete/${index}`, { method: 'DELETE' });
+        const result = await response.json();
+        
+        if (response.ok) {
+          showStatus('✅ Đã xóa thông báo', true);
+          loadNotifications();
+        }
+      } catch (error) {
+        showStatus('❌ Lỗi xóa: ' + error.message, false);
+      }
+    }
+    
+    function clearForm() {
+      document.getElementById('pnrInput').value = '';
+      document.getElementById('langInput').value = 'vi';
+      document.getElementById('titleInput').value = '';
+      document.getElementById('bodyInput').value = '';
+      document.getElementById('pnrInput').focus();
+    }
+    
+    function showStatus(message, isSuccess) {
+      const el = document.getElementById('statusMessage');
+      el.textContent = message;
+      el.className = 'status-message ' + (isSuccess ? 'status-success' : 'status-error');
+      
+      setTimeout(() => {
+        el.className = 'status-message';
+      }, 5000);
+    }
+    
+    // Load notifications on page load and every 5 seconds
+    window.addEventListener('DOMContentLoaded', () => {
+      loadNotifications();
+      document.getElementById('pnrInput').focus();
+      
+      // Auto-refresh every 5 seconds
+      setInterval(loadNotifications, 5000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Firebase Notifications</title>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    h1 {
+      color: #005A8C;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+    
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .row.full {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    label {
+      font-weight: bold;
+      color: #005A8C;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    
+    input, textarea, select {
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: 0.3s;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      border-color: #BFA15F;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(191,161,95,0.1);
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+    }
+    
+    button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .btn-primary {
+      background: #005A8C;
+      color: white;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      background: #004070;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,90,140,0.3);
+    }
+    
+    .btn-secondary {
+      background: #BFA15F;
+      color: white;
+    }
+    
+    .btn-secondary:hover:not(:disabled) {
+      background: #a68a4a;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(191,161,95,0.3);
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .status-message {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .status-success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      display: block;
+    }
+    
+    .status-error {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      display: block;
+    }
+    
+    .notification-list {
+      margin-top: 40px;
+      border-top: 2px solid #eee;
+      padding-top: 30px;
+    }
+    
+    .notification-list h2 {
+      color: #005A8C;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    
+    .notification-item {
+      background: #f8f9fa;
+      border-left: 4px solid #BFA15F;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .notification-content {
+      flex: 1;
+    }
+    
+    .notification-content p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    
+    .notification-content strong {
+      color: #005A8C;
+    }
+    
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    
+    .btn-delete:hover {
+      background: #c82333;
+    }
+    
+    .info-box {
+      background: #e7f3ff;
+      border-left: 4px solid #2196F3;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 4px;
+    }
+    
+    .info-box p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #1565c0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔥 Admin - Firebase Notifications</h1>
+    <p class="subtitle">Gửi thông báo realtime cho khách hàng</p>
+    
+    <div id="statusMessage" class="status-message"></div>
+    
+    <div class="info-box">
+      <p>✓ Notifications lưu vào Firebase Realtime Database</p>
+      <p>✓ Khách hàng nhận ngay realtime (không cần refresh)</p>
+      <p>✓ Hỗ trợ đa ngôn ngữ: VI, EN, ZH, JA, KO</p>
+    </div>
+    
+    <div class="row">
+      <div class="form-group">
+        <label>👤 PNR / Booking Code (bắt buộc)</label>
+        <input type="text" id="pnrInput" placeholder="VD: D45CQM" maxlength="10">
+      </div>
+      <div class="form-group">
+        <label>🌐 Ngôn ngữ (bắt buộc)</label>
+        <select id="langSelect">
+          <option value="vi">🇻🇳 Tiếng Việt</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="zh">🇨🇳 中文</option>
+          <option value="ja">🇯🇵 日本語</option>
+          <option value="ko">🇰🇷 한국어</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="row full">
+      <div class="form-group">
+        <label>📌 Tiêu đề (bắt buộc)</label>
+        <input type="text" id="titleInput" placeholder="VD: ⚠️ Cập nhật chuyến bay" maxlength="100">
+      </div>
+    </div>
+    
+    <div class="row full">
+      <div class="form-group">
+        <label>📝 Nội dung (bắt buộc)</label>
+        <textarea id="bodyInput" placeholder="VD: Cửa khởi hành của bạn đã thay đổi từ cửa 26 sang cửa 28. Vui lòng di chuyển đến cửa mới."></textarea>
+      </div>
+    </div>
+    
+    <div class="btn-group">
+      <button class="btn-primary" onclick="sendNotification()" id="sendBtn">📤 Gửi Notification</button>
+      <button class="btn-secondary" onclick="clearForm()">🔄 Xóa Form</button>
+    </div>
+    
+    <!-- Notification List Section -->
+    <div class="notification-list">
+      <h2>📋 Danh sách Notifications gần đây</h2>
+      <div id="notificationContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0m5pdGzxLa4NZTLkynx6Rv7CVXtkCJec",
+      authDomain: "vna-smartway.firebaseapp.com",
+      projectId: "vna-smartway",
+      storageBucket: "vna-smartway.firebasestorage.app",
+      messagingSenderId: "821201769271",
+      appId: "1:821201769271:web:3a28fb5c5bb1e3564fc0b2"
+    };
+    
+    // Firebase will be initialized after SDK loads (see end of file)
+    let db = null;
+    
+    function showStatus(message, isSuccess) {
+      const el = document.getElementById('statusMessage');
+      el.textContent = message;
+      el.className = 'status-message ' + (isSuccess ? 'status-success' : 'status-error');
+      
+      setTimeout(() => {
+        el.style.display = 'none';
+      }, 5000);
+    }
+    
+    function validateForm() {
+      const pnr = document.getElementById('pnrInput').value.trim();
+      const title = document.getElementById('titleInput').value.trim();
+      const body = document.getElementById('bodyInput').value.trim();
+      
+      if (!pnr) {
+        showStatus('❌ Vui lòng nhập PNR', false);
+        return false;
+      }
+      
+      if (!title) {
+        showStatus('❌ Vui lòng nhập Tiêu đề', false);
+        return false;
+      }
+      
+      if (!body) {
+        showStatus('❌ Vui lòng nhập Nội dung', false);
+        return false;
+      }
+      
+      return true;
+    }
+    
+    async function sendNotification() {
+      if (!validateForm()) return;
+      
+      const sendBtn = document.getElementById('sendBtn');
+      sendBtn.disabled = true;
+      sendBtn.textContent = '⏳ Đang gửi...';
+      
+      try {
+        const pnr = document.getElementById('pnrInput').value.trim().toUpperCase();
+        const lang = document.getElementById('langSelect').value;
+        const title = document.getElementById('titleInput').value.trim();
+        const body = document.getElementById('bodyInput').value.trim();
+        
+        // Push to Firebase
+        const newNotifRef = db.ref('notifications/' + pnr).push();
+        await newNotifRef.set({
+          title: title,
+          body: body,
+          lang: lang,
+          timestamp: firebase.database.ServerValue.TIMESTAMP,
+          read: false
+        });
+        
+        showStatus(`✅ Gửi notification cho ${pnr} thành công!`, true);
+        clearForm();
+        loadNotifications();
+        
+      } catch(error) {
+        showStatus(`❌ Lỗi: ${error.message}`, false);
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.textContent = '📤 Gửi Notification';
+      }
+    }
+    
+    function clearForm() {
+      document.getElementById('pnrInput').value = '';
+      document.getElementById('titleInput').value = '';
+      document.getElementById('bodyInput').value = '';
+      document.getElementById('langSelect').value = 'vi';
+    }
+    
+    async function loadNotifications() {
+      try {
+        const ref = db.ref('notifications');
+        ref.limitToLast(50).once('value', snapshot => {
+          const data = snapshot.val();
+          if (data) {
+            const notifications = [];
+            
+            // Flatten the nested structure
+            for (const pnr in data) {
+              for (const notifId in data[pnr]) {
+                notifications.push({
+                  pnr: pnr,
+                  notifId: notifId,
+                  ...data[pnr][notifId]
+                });
+              }
+            }
+            
+            // Sort by timestamp descending
+            notifications.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            
+            displayNotifications(notifications);
+          } else {
+            document.getElementById('notificationContainer').innerHTML = 
+              '<p style="color:#999;">Chưa có notifications</p>';
+          }
+        });
+      } catch(error) {
+        console.log('Failed to load notifications:', error);
+      }
+    }
+    
+    function displayNotifications(data) {
+      const container = document.getElementById('notificationContainer');
+      
+      if (!data || data.length === 0) {
+        container.innerHTML = '<p style="color:#999;">Chưa có notifications</p>';
+        return;
+      }
+      
+      container.innerHTML = data.map(notif => {
+        const date = new Date(notif.timestamp || Date.now()).toLocaleString('vi-VN');
+        return `
+          <div class="notification-item">
+            <div class="notification-content">
+              <p><strong>PNR:</strong> ${notif.pnr}</p>
+              <p><strong>Title:</strong> ${notif.title}</p>
+              <p><strong>Body:</strong> ${notif.body}</p>
+              <p style="font-size:12px;color:#999;margin-top:8px;">
+                ${date}
+              </p>
+            </div>
+            <button class="btn-delete" onclick="deleteNotification('${notif.pnr}', '${notif.notifId}')">
+              🗑️ Xóa
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+    
+    function deleteNotification(pnr, notifId) {
+      if (confirm('Xóa notification này?')) {
+        db.ref('notifications/' + pnr + '/' + notifId).remove().then(() => {
+          loadNotifications();
+        });
+      }
+    }
+    
+    // Load notifications on page load
+    window.addEventListener('load', () => {
+      loadNotifications();
+      
+      // Reload every 5 seconds
+      setInterval(loadNotifications, 5000);
+    });
+  </script>
+</body>
+</html>

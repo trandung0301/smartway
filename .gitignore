@@ -1,0 +1,3 @@
+# Keep very large raw media out of git
+ID conx.mp4
+*.tmp

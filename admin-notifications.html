@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VNA Admin - Quản lý Notification</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .header h1 {
+      color: #005A8C;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .header-info {
+      font-size: 13px;
+      color: #666;
+    }
+    
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .card h2 {
+      color: #005A8C;
+      font-size: 18px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #BFA15F;
+      padding-bottom: 10px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      border-color: #BFA15F;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(191,161,95,0.1);
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 14px;
+    }
+    
+    .btn-primary {
+      background: #005A8C;
+      color: white;
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .btn-primary:hover {
+      background: #004070;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,90,140,0.3);
+    }
+    
+    .btn-success {
+      background: #28a745;
+      color: white;
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .btn-success:hover {
+      background: #218838;
+      transform: translateY(-2px);
+    }
+    
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #c82333;
+    }
+    
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    
+    .notification-list {
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    
+    .notification-item {
+      background: #f8f9fa;
+      border-left: 4px solid #BFA15F;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    
+    .notification-info {
+      flex: 1;
+    }
+    
+    .notification-pnr {
+      font-weight: bold;
+      color: #005A8C;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    
+    .notification-text {
+      color: #333;
+      font-size: 13px;
+      margin-bottom: 5px;
+      word-break: break-word;
+    }
+    
+    .notification-time {
+      font-size: 11px;
+      color: #999;
+    }
+    
+    .notification-actions {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .badge-success {
+      background: #28a745;
+    }
+    
+    .badge-warning {
+      background: #ffc107;
+      color: #333;
+    }
+    
+    .badge-danger {
+      background: #dc3545;
+    }
+    
+    .info-box {
+      background: #e3f2fd;
+      border-left: 4px solid #2196F3;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #1565c0;
+      margin-bottom: 15px;
+    }
+    
+    .success-message {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      display: none;
+    }
+    
+    .error-message {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      display: none;
+    }
+    
+    .tab-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .tab-btn {
+      padding: 12px 20px;
+      border: 2px solid #ddd;
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+      color: #666;
+    }
+    
+    .tab-btn.active {
+      background: #005A8C;
+      color: white;
+      border-color: #005A8C;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🔔 VNA Admin - Notification Manager</h1>
+      <div class="header-info">
+        <div>📊 Stored: <span id="totalCount">0</span> notifications</div>
+      </div>
+    </div>
+    
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="switchTab('send')">📤 Gửi Notification</button>
+      <button class="tab-btn" onclick="switchTab('manage')">📋 Quản lý</button>
+      <button class="tab-btn" onclick="switchTab('config')">⚙️ Cấu hình</button>
+    </div>
+    
+    <!-- TAB 1: SEND -->
+    <div id="send" class="tab-content active">
+      <div class="main-grid">
+        <!-- Gửi Notification -->
+        <div class="card">
+          <h2>📤 Gửi Notification cho Khách</h2>
+          
+          <div class="info-box">
+            💡 Nhập PNR của khách và nội dung để gửi notification ngay lập tức
+          </div>
+          
+          <div id="sendMessage" class="success-message"></div>
+          <div id="sendError" class="error-message"></div>
+          
+          <div class="form-group">
+            <label>🎫 PNR của khách (VD: D45CQM):</label>
+            <input type="text" id="sendPnr" placeholder="Nhập PNR" style="text-transform: uppercase;">
+          </div>
+          
+          <div class="form-group">
+            <label>📝 Nội dung thông báo:</label>
+            <textarea id="sendContent" placeholder="VD: Chuyến bay của bạn sẽ cất cánh lúc 16:40 từ cửa 26"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>🌐 Ngôn ngữ (không bắt buộc):</label>
+            <select id="sendLang">
+              <option value="all">📢 Tất cả ngôn ngữ (mặc định)</option>
+              <option value="vi">🇻🇳 Tiếng Việt</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="zh">🇨🇳 中文</option>
+              <option value="ja">🇯🇵 日本語</option>
+              <option value="ko">🇰🇷 한국어</option>
+            </select>
+          </div>
+          
+          <div class="btn-group">
+            <button class="btn-primary" onclick="sendNotificationNow()">
+              🚀 Gửi Ngay
+            </button>
+            <button class="btn-success" onclick="saveNotificationForLater()">
+              💾 Lưu & Gửi Sau
+            </button>
+          </div>
+        </div>
+        
+        <!-- Xem trước -->
+        <div class="card">
+          <h2>👁️ Xem Trước</h2>
+          
+          <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; min-height: 200px;">
+            <div style="font-weight: bold; color: #005A8C; margin-bottom: 10px;">📬 Notification Preview:</div>
+            
+            <div style="background: white; padding: 12px; border-radius: 6px; border-left: 4px solid #BFA15F; margin-bottom: 10px;">
+              <div style="font-weight: bold; color: #005A8C; margin-bottom: 8px;">
+                📬 VNA SmartWay
+              </div>
+              <div id="previewContent" style="color: #333; font-size: 14px;">
+                (Nội dung sẽ hiển thị ở đây)
+              </div>
+            </div>
+            
+            <div style="font-size: 12px; color: #999; margin-top: 10px;">
+              ℹ️ PNR: <span id="previewPnr">---</span><br>
+              🌐 Language: <span id="previewLang">all</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- TAB 2: MANAGE -->
+    <div id="manage" class="tab-content">
+      <div class="card">
+        <h2>📋 Danh sách Notification Đã Lưu</h2>
+        
+        <div class="info-box">
+          Các notification được lưu sẽ gửi cho khách khi họ vào trang web
+        </div>
+        
+        <div class="notification-list" id="notificationList">
+          <div style="text-align: center; color: #999; padding: 20px;">
+            Chưa có notification nào
+          </div>
+        </div>
+        
+        <div style="margin-top: 15px;">
+          <button class="btn-danger" onclick="clearAllNotifications()" style="width: 100%;">
+            🗑️ Xóa Tất Cả
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- TAB 3: CONFIG -->
+    <div id="config" class="tab-content">
+      <div class="main-grid">
+        <div class="card">
+          <h2>⚙️ Cấu hình</h2>
+          
+          <div class="form-group">
+            <label>Storage Key:</label>
+            <input type="text" id="storageKey" readonly value="vnaNotificationQueue">
+          </div>
+          
+          <div class="form-group">
+            <label>📊 Thống kê:</label>
+            <div style="background: #f5f5f5; padding: 10px; border-radius: 6px; font-size: 13px;">
+              <div>Total saved: <span id="statTotal">0</span></div>
+              <div>Last updated: <span id="statTime">---</span></div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 15px;">
+            <button class="btn-primary" onclick="exportNotifications()" style="width: 100%; margin-bottom: 10px;">
+              📥 Export JSON
+            </button>
+            <button class="btn-primary" onclick="importNotifications()" style="width: 100%;">
+              📤 Import JSON
+            </button>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2>🔍 Debug</h2>
+          
+          <button class="btn-primary" onclick="testNotification()" style="width: 100%; margin-bottom: 10px;">
+            🧪 Test Notification
+          </button>
+          
+          <button class="btn-primary" onclick="viewRawData()" style="width: 100%; margin-bottom: 10px;">
+            📋 View Raw Data
+          </button>
+          
+          <button class="btn-danger" onclick="clearStorage()" style="width: 100%;">
+            🗑️ Clear All Storage
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'vnaNotificationQueue';
+    
+    // Initialize
+    window.addEventListener('load', () => {
+      loadNotificationList();
+      setupPreviewListener();
+      updateStats();
+    });
+    
+    // Tab switching
+    function switchTab(tabName) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Show selected tab
+      document.getElementById(tabName).classList.add('active');
+      event.target.classList.add('active');
+    }
+    
+    // Setup live preview
+    function setupPreviewListener() {
+      document.getElementById('sendPnr').addEventListener('input', updatePreview);
+      document.getElementById('sendContent').addEventListener('input', updatePreview);
+      document.getElementById('sendLang').addEventListener('change', updatePreview);
+    }
+    
+    function updatePreview() {
+      const pnr = document.getElementById('sendPnr').value || '---';
+      const content = document.getElementById('sendContent').value || '(Nội dung sẽ hiển thị ở đây)';
+      const lang = document.getElementById('sendLang').value || 'all';
+      
+      document.getElementById('previewPnr').textContent = pnr;
+      document.getElementById('previewContent').textContent = content;
+      document.getElementById('previewLang').textContent = lang;
+    }
+    
+    // Send notification immediately
+    function sendNotificationNow() {
+      const pnr = document.getElementById('sendPnr').value.toUpperCase().trim();
+      const content = document.getElementById('sendContent').value.trim();
+      const lang = document.getElementById('sendLang').value;
+      
+      if (!pnr) {
+        showError('Vui lòng nhập PNR!');
+        return;
+      }
+      if (!content) {
+        showError('Vui lòng nhập nội dung!');
+        return;
+      }
+      
+      // Save to storage
+      saveNotification(pnr, content, lang);
+      
+      // Try to send to active clients
+      if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          type: 'SEND_NOTIFICATION_TO_PNR',
+          pnr: pnr,
+          content: content,
+          lang: lang
+        });
+      }
+      
+      showSuccess(`✅ Notification gửi cho PNR ${pnr}`);
+      clearForm();
+      loadNotificationList();
+    }
+    
+    // Save notification for later
+    function saveNotificationForLater() {
+      const pnr = document.getElementById('sendPnr').value.toUpperCase().trim();
+      const content = document.getElementById('sendContent').value.trim();
+      const lang = document.getElementById('sendLang').value;
+      
+      if (!pnr || !content) {
+        showError('Vui lòng nhập PNR và nội dung!');
+        return;
+      }
+      
+      saveNotification(pnr, content, lang);
+      showSuccess(`✅ Đã lưu notification cho PNR ${pnr}`);
+      clearForm();
+      loadNotificationList();
+    }
+    
+    // Core storage functions
+    function saveNotification(pnr, content, lang = 'all') {
+      let queue = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      
+      queue.push({
+        id: Date.now(),
+        pnr: pnr,
+        content: content,
+        lang: lang,
+        timestamp: new Date().toLocaleString('vi-VN'),
+        sent: false
+      });
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
+      updateStats();
+    }
+    
+    function loadNotificationList() {
+      const queue = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      const listEl = document.getElementById('notificationList');
+      
+      if (queue.length === 0) {
+        listEl.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">Chưa có notification nào</div>';
+        return;
+      }
+      
+      listEl.innerHTML = queue.map(item => `
+        <div class="notification-item">
+          <div class="notification-info">
+            <div class="notification-pnr">🎫 ${item.pnr}</div>
+            <div class="notification-text">${item.content}</div>
+            <div class="notification-time">
+              ⏰ ${item.timestamp} • 🌐 ${item.lang}
+              <span class="status-badge ${item.sent ? 'badge-success' : 'badge-warning'}" style="margin-left: 10px;">
+                ${item.sent ? '✓ Sent' : '⏳ Pending'}
+              </span>
+            </div>
+          </div>
+          <div class="notification-actions">
+            <button class="btn-small btn-primary" onclick="editNotification(${item.id})">✏️</button>
+            <button class="btn-small btn-danger" onclick="deleteNotification(${item.id})">🗑️</button>
+          </div>
+        </div>
+      `).join('');
+      
+      document.getElementById('totalCount').textContent = queue.length;
+    }
+    
+    function deleteNotification(id) {
+      if (!confirm('Xóa notification này?')) return;
+      
+      let queue = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      queue = queue.filter(item => item.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
+      
+      loadNotificationList();
+      updateStats();
+    }
+    
+    function clearAllNotifications() {
+      if (!confirm('Xóa TẤT CẢ notifications? (không thể hoàn tác)')) return;
+      
+      localStorage.removeItem(STORAGE_KEY);
+      loadNotificationList();
+      updateStats();
+    }
+    
+    function clearStorage() {
+      if (!confirm('Xóa TẤT CẢ storage data? (không thể hoàn tác)')) return;
+      
+      localStorage.clear();
+      location.reload();
+    }
+    
+    function updateStats() {
+      const queue = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      document.getElementById('statTotal').textContent = queue.length;
+      document.getElementById('statTime').textContent = new Date().toLocaleString('vi-VN');
+    }
+    
+    function exportNotifications() {
+      const data = localStorage.getItem(STORAGE_KEY) || '[]';
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `notifications_${new Date().getTime()}.json`;
+      a.click();
+    }
+    
+    function importNotifications() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = event => {
+          try {
+            const data = JSON.parse(event.target.result);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            loadNotificationList();
+            showSuccess('✅ Import thành công');
+          } catch(err) {
+            showError('❌ File không hợp lệ');
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+    
+    function testNotification() {
+      alert('Test notification gửi! Kiểm tra system notification tray.');
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('🔔 VNA Test', {
+          body: 'Đây là notification test từ Admin Panel',
+          tag: 'vna-admin-test'
+        });
+      }
+    }
+    
+    function viewRawData() {
+      const data = localStorage.getItem(STORAGE_KEY) || '[]';
+      alert('Raw Data:\n\n' + JSON.stringify(JSON.parse(data), null, 2));
+    }
+    
+    // Helper functions
+    function clearForm() {
+      document.getElementById('sendPnr').value = '';
+      document.getElementById('sendContent').value = '';
+      document.getElementById('sendLang').value = 'all';
+      updatePreview();
+    }
+    
+    function showSuccess(msg) {
+      const el = document.getElementById('sendMessage');
+      el.textContent = msg;
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 5000);
+    }
+    
+    function showError(msg) {
+      const el = document.getElementById('sendError');
+      el.textContent = msg;
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 5000);
+    }
+  </script>
+</body>
+</html>
