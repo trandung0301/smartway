@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<!-- saved from url=(0180)https://file.sotaagents.ai/public/artifacts/6a043ccfb1486aa315d25181/6a043ccfb1486aa315d25185/5c41f8ea-21d7-4e15-9144-1124de8d8e2b/outputs/14acecad-fb68-499e-873b-c3617251b422.html -->
+<html lang="vi"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+<title>VNA SmartWay</title>
+<style>
+:root{--vna-blue:#005A8C;--vna-gold:#BFA15F;--text-main:#333;--status-green:#28a745;--status-red:#dc3545;--status-yellow:#ffc107;}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#e0e0e0;display:flex;justify-content:center;margin:0;padding:20px;}
+.mobile-container{width:100%;max-width:400px;background:#fff;min-height:800px;border-radius:30px;box-shadow:0 10px 30px rgba(0,0,0,0.2);overflow:hidden;position:relative;display:flex;flex-direction:column;}
+.header{background:var(--vna-blue);color:white;padding:15px;border-bottom:4px solid var(--vna-gold);display:flex;align-items:center;justify-content:space-between;}
+.header-btn{background:none;border:none;color:white;font-size:20px;cursor:pointer;padding:5px;}
+.logo-container{display:flex;align-items:center;justify-content:center;flex-direction:column;flex:1;}
+.logo-container h2{margin:0;font-size:18px;display:flex;align-items:center;gap:8px;}
+.logo-container p{margin:2px 0 0;font-size:12px;opacity:.9;}
+.lotus-icon{width:24px;height:24px;fill:var(--vna-gold);}
+.screen{padding:20px;display:none;flex:1;overflow-y:auto;}
+.screen.active{display:block;animation:fadeIn .3s ease-in-out;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:white;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.08);border:1px solid #eee;}
+.location-tag{color:var(--vna-blue);font-weight:bold;font-size:16px;margin-bottom:10px;border-bottom:1px dashed #ccc;padding-bottom:10px;}
+.btn{display:flex;width:100%;padding:15px;margin-bottom:15px;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;transition:.2s;align-items:center;justify-content:center;gap:10px;box-sizing:border-box;}
+.btn-primary{background:var(--vna-gold);color:white;}
+.btn-secondary{background:#eef3f8;color:var(--vna-blue);border:1px solid #b9cde0;}
+.btn-outline{background:transparent;border:2px solid var(--vna-blue);color:var(--vna-blue);justify-content:flex-start;}
+.input-group{margin-bottom:15px;}
+.input-group label{display:block;margin-bottom:5px;font-weight:bold;font-size:13px;color:var(--vna-blue);}
+.input-group input{width:100%;box-sizing:border-box;padding:12px;border:2px solid #ddd;border-radius:8px;font-size:16px;text-transform:uppercase;font-weight:bold;}
+.input-group input:focus{border-color:var(--vna-gold);outline:none;}
+.input-group input::placeholder{font-weight:normal;color:#aaa;}
+.note{font-size:11px;color:#888;font-style:italic;margin-top:3px;display:block;}
+.demo-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px;}
+.tag{background:#eaf4ff;border:1px solid var(--vna-blue);color:var(--vna-blue);padding:5px 10px;border-radius:15px;font-size:12px;cursor:pointer;font-weight:bold;}
+.tag:active{background:var(--vna-blue);color:white;}
+.live-status-board{background:#f0f7fb;border-radius:8px;padding:12px;margin-bottom:15px;border-left:4px solid var(--vna-gold);}
+.status-row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;}
+.status-row:last-child{margin-bottom:0;}
+.status-badge{padding:3px 8px;border-radius:4px;font-weight:bold;font-size:12px;color:white;}
+.bg-green{background:var(--status-green);}
+.flow-path{padding:10px;background:#f8f9fa;border-left:4px solid var(--vna-blue);border-radius:4px;font-size:14px;line-height:1.6;}
+.welcome-box{background:#eef6ff;border:1px solid #c8ddf1;border-radius:12px;padding:12px 14px;margin-bottom:15px;color:#032d51;font-weight:700;line-height:1.4;}
+.notice-box{display:none;background:#fff8e8;border:1px solid #f3d28b;border-left:4px solid #f0ad00;border-radius:12px;padding:12px 14px;margin-bottom:15px;color:#5a4200;line-height:1.45;}
+.notice-box .notice-title{font-weight:700;margin-bottom:4px;color:#7a5600;}
+.notice-box.alerting{animation:noticePulse 1s ease-in-out 3;}
+.notice-bell{font-size:16px;margin-right:6px;display:inline-block;}
+.notice-box.alerting .notice-bell{animation:bellShake .5s ease-in-out 3;}
+@keyframes noticePulse{0%{box-shadow:0 0 0 0 rgba(240,173,0,.35)}50%{box-shadow:0 0 0 10px rgba(240,173,0,.05)}100%{box-shadow:0 0 0 0 rgba(240,173,0,0)}}
+@keyframes bellShake{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-15deg)}75%{transform:rotate(15deg)}}
+.staff-panel{background:#f8fbff;border:1px solid #d7e8f7;border-radius:12px;padding:14px;}
+.staff-panel h4{margin:0 0 10px;color:var(--vna-blue);}
+.staff-panel p{margin:0 0 12px;color:#5f6f7f;font-size:13px;}
+.staff-list{max-height:220px;overflow:auto;border:1px dashed #cddaea;background:#fff;border-radius:8px;padding:8px;}
+.staff-item{font-size:13px;padding:8px;border-bottom:1px solid #edf2f7;}
+.staff-item:last-child{border-bottom:none;}
+.flow-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;flex-direction:column;}
+.flow-step-row{display:flex;align-items:flex-start;gap:10px;width:100%;}
+.flow-step:last-child{margin-bottom:0;font-weight:bold;color:var(--vna-blue);}
+.highlight-box{display:inline-block;background:#333;color:white;padding:2px 8px;border-radius:4px;font-weight:bold;}
+.gate-box{display:inline-block;background:var(--vna-gold);color:white;padding:2px 8px;border-radius:4px;font-weight:bold;}
+.btn-lang{justify-content:flex-start;padding:12px 20px;font-size:18px;border:1px solid #ddd;background:#fafafa;color:#333;margin-bottom:10px;}
+#langModal{display:none;position:absolute;top:70px;right:10px;background:white;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,.2);z-index:100;border:1px solid #ddd;}
+.lang-item{padding:12px 20px;border-bottom:1px solid #eee;font-size:15px;font-weight:bold;color:var(--vna-blue);cursor:pointer;display:flex;gap:10px;}
+.lang-item:last-child{border-bottom:none;}
+.video-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:200px;background:#1a1a2e;border-radius:8px;color:#aaa;text-align:center;font-size:13px;gap:8px;}
+.video-placeholder .icon{font-size:36px;}
+#videoDisplay iframe,#videoDisplay video{width:100%;height:260px;border-radius:8px;border:2px solid var(--vna-gold);display:block;}
+/* ===== I-D Transit Infographic ===== */
+.id-infographic{padding:4px 0 12px;}
+.id-step-pair{display:flex;align-items:flex-start;margin-bottom:3px;position:relative;justify-content:center;}
+.id-step-pair.odd{flex-direction:row;padding-right:0;}
+.id-step-pair.even{flex-direction:row-reverse;padding-left:0;}
+.id-step-circle{width:32px;min-width:32px;height:32px;background:var(--vna-blue);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0;border:2.5px solid var(--vna-gold);box-shadow:0 2px 6px rgba(0,90,140,.35);position:absolute;top:4px;right:4px;}
+.id-step-box{width:180px;border-radius:14px;padding:10px 12px 9px;margin:0 8px;position:relative;}
+.id-step-pair.odd .id-step-box{background:#d5edf8;border:1.5px solid #78b5d9;}
+.id-step-pair.even .id-step-box{background:#d7f0e8;border:1.5px solid #7dc5a8;}
+.id-step-icon{font-size:22px;margin-bottom:3px;display:block;}
+.id-step-title{font-size:13px;font-weight:900;color:var(--vna-blue);line-height:1.3;}
+.id-step-desc{font-size:11px;color:#555;margin-top:2px;line-height:1.4;}
+.id-photo-slot{margin-top:8px;padding-top:7px;border-top:1px dashed rgba(0,0,0,.14);}
+.id-arrow-down{text-align:center;color:var(--vna-blue);font-size:28px;font-weight:bold;padding:6px 0;line-height:1;}
+.id-photo-placeholder{display:flex;align-items:center;justify-content:center;height:62px;background:rgba(255,255,255,.55);border-radius:8px;border:1.5px dashed #aaa;cursor:pointer;gap:5px;font-size:11px;color:#888;transition:background .15s;}
+.id-photo-placeholder:active{background:rgba(255,255,255,.88);}
+.id-photo-preview{width:100%;border-radius:8px;display:block;max-height:140px;object-fit:cover;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.13);}
+.id-photo-actions{display:flex;gap:6px;margin-top:5px;}
+.id-photo-btn{font-size:11px;border-radius:5px;padding:3px 9px;cursor:pointer;font-weight:bold;}
+.id-photo-btn.change{background:#eef3f8;color:var(--vna-blue);border:1px solid #b9cde0;}
+.id-photo-btn.del{background:#fdf0ef;color:#c0392b;border:1px solid #e8bbb8;}
+.id-arrow-row{font-size:24px;color:var(--vna-gold);font-weight:bold;padding:2px 0;line-height:1;text-align:center;}
+.id-arrow-row.r{text-align:center;}
+.id-arrow-row.l{text-align:center;}
+</style>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="mobile-container">
+  <div class="header">
+    <button class="header-btn" onclick="goBack()" id="backBtn" style="visibility: visible;">❮</button>
+    <div class="logo-container">
+      <h2>
+        <svg class="lotus-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 10 Q40 40 10 50 Q40 60 50 90 Q60 60 90 50 Q60 40 50 10 Z"></path>
+        </svg>
+        VNA SmartWay
+      </h2>
+      <p data-i18n="header_sub">Travel Assistant</p>
+    </div>
+    <button class="header-btn" onclick="toggleLangModal()">🌐</button>
+  </div>
+
+  <div id="langModal">
+    <div class="lang-item" onclick="setLang(&#39;vi&#39;)">🇻🇳 Tiếng Việt</div>
+    <div class="lang-item" onclick="setLang(&#39;en&#39;)">🇬🇧 English</div>
+    <div class="lang-item" onclick="setLang(&#39;zh&#39;)">🇨🇳 中文</div>
+    <div class="lang-item" onclick="setLang(&#39;ja&#39;)">🇯🇵 日本語</div>
+    <div class="lang-item" onclick="setLang(&#39;ko&#39;)">🇰🇷 한국어</div>
+  </div>
+
+  <!-- PAGE 1: LANGUAGE -->
+  <div id="page1" class="screen active" style="text-align:center;">
+    <h3 style="color:var(--vna-blue);font-size:20px;">Chào mừng / Welcome</h3>
+    <p style="margin-bottom:20px;color:#666;font-size:14px;">Vui lòng chọn ngôn ngữ / Language</p>
+    <button class="btn btn-lang" onclick="startApp(&#39;vi&#39;)">🇻🇳 Tiếng Việt</button>
+    <button class="btn btn-lang" onclick="startApp(&#39;en&#39;)">🇬🇧 English</button>
+    <button class="btn btn-lang" onclick="startApp(&#39;zh&#39;)">🇨🇳 中文</button>
+    <button class="btn btn-lang" onclick="startApp(&#39;ja&#39;)">🇯🇵 日本語</button>
+    <button class="btn btn-lang" onclick="startApp(&#39;ko&#39;)">🇰🇷 한국어</button>
+  </div>
+
+  <!-- PAGE 2: AIRPORT -->
+  <div id="page2" class="screen">
+    <h3 style="color:var(--vna-blue);text-align:center;" data-i18n="p2_title">Your Location</h3>
+    <p style="color:#666;text-align:center;font-size:14px;" data-i18n="p2_desc">Which airport are you currently at?</p>
+    <button class="btn btn-outline" onclick="goToPage(&#39;page3&#39;)">📍 <span data-i18n="p2_han">Noi Bai International Airport (HAN)</span></button>
+    <button class="btn btn-outline" onclick="goToPage(&#39;page3&#39;)">📍 <span data-i18n="p2_sgn">Tan Son Nhat Airport (SGN)</span></button>
+  </div>
+
+  <!-- PAGE 3: PNR INPUT -->
+  <div id="page3" class="screen">
+    <div class="card">
+      <div class="location-tag">📍 <span data-i18n="p3_loc">Noi Bai (HAN)</span></div>
+      <p style="font-size:13px;color:#555;margin-bottom:10px;" data-i18n="p3_prompt">Quý khách vui lòng nhập mã đặt chỗ:</p>
+      <div class="input-group">
+        <label>🎟️ <span data-i18n="p3_pnr">Booking Code (PNR):</span></label>
+        <input type="text" id="pnrInput" placeholder="VD: VNX8A2" maxlength="10" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text">
+        <span class="note" data-i18n="p3_pnr_note">The system will retrieve your full itinerary based on this code.</span>
+      </div>
+      <button class="btn btn-secondary" type="button" onclick="openStaffNoticePage()">🔐 Đăng nhập nhân viên</button>
+      <button class="btn btn-primary" onclick="processAPI()" style="opacity: 1;">
+        <span id="btnProcessText" data-i18n="p3_btn">Look Up</span> ✈️
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE 4: STATUS -->
+  <div id="page4" class="screen">
+    <div class="card">
+      <div class="welcome-box" id="welcomeMessage" style="display: block;">Welcome Meihsiang .Hsu to Noi Bai International Airport.<br>Please check your flight information and follow the instructions below.</div>
+      <div class="notice-box" id="airlineNoticeBox">
+        <div class="notice-title"><span class="notice-bell">🔔</span><span data-i18n="p4_notice_title">Airline Notice</span></div>
+        <div id="airlineNoticeText"></div>
+      </div>
+      <div id="countdownBanner" style="background: var(--status-red); color: white; text-align: center; padding: 12px; border-radius: 8px; margin-bottom: 15px; display: block;">
+        <span data-i18n="p4_countdown_label">Time until AIRCRAFT DOOR CLOSES:</span>
+        <span id="countdownTimer" style="font-size:26px;display:block;font-family:monospace;font-weight:bold;">02:45:00</span>
+      </div>
+      <div class="live-status-board" id="liveStatusBoard" style="display: block;">
+        <div class="status-row">
+          <span><span data-i18n="p4_route">Itinerary:</span> <strong id="lsRoute" style="color:var(--vna-blue);">LPQ ✈️  HAN ✈️ TPE</strong></span>
+          <span class="status-badge bg-green" id="lsStatus">TRANSIT II</span>
+        </div>
+        <div class="status-row" id="rowArrival" style="display: flex; padding-top: 8px; border-top: 1px dashed rgb(204, 204, 204);">
+          <span>🛬 <span data-i18n="p4_arr">Arrival:</span> <strong id="lsArrFlt">VN930 (LPQ → HAN)</strong></span>
+        </div>
+        <div class="status-row" id="rowArrivalTime" style="display: flex;">
+          <span id="lsArrTime">Estimated landing: 16:05</span>
+        </div>
+        <div class="status-row" id="rowArrivalBelt" style="display: flex;">
+          <span><span data-i18n="p4_belt">Baggage Belt:</span> <strong id="lsBelt" class="highlight-box">7</strong>
+          <a href="javascript:void(0);" onclick="openBeltImage(document.getElementById(&#39;lsBelt&#39;).innerText)" style="color:var(--vna-blue);text-decoration:underline;margin-left:10px;" data-i18n="p4_view_img">🖼️ View Map</a></span>
+        </div>
+        <div class="status-row" id="rowDeparture" style="display: flex; padding-top: 8px;">
+          <span>🛫 <span data-i18n="p4_dep">Departure:</span> <strong id="lsDepFlt">VN578 (HAN → TPE)</strong></span>
+        </div>
+        <div class="status-row" id="rowDepartureTime" style="display: flex;">
+          <span id="lsDepTime">Estimated departure: 17:20</span>
+        </div>
+        <div class="status-row" id="rowDepartureGate" style="display: flex;">
+          <span><span data-i18n="p4_gate">Departure Gate:</span> <strong id="lsGate" class="gate-box">26</strong></span>
+        </div>
+        <div class="status-row" id="rowDepartureBoarding" style="display: flex;">
+          <span><span data-i18n="p4_board">Boarding:</span> <strong id="lsBoardingTimeDep" style="color:var(--vna-blue);">16:40</strong></span>
+        </div>
+        <div class="status-row" id="rowConn" style="display: flex; padding-top: 8px;">
+          <span><span data-i18n="p4_conn">Connection Time:</span> <strong id="lsConnTime" style="color:var(--status-red);">1h 15m</strong></span>
+          <span><span data-i18n="p4_board">Boarding:</span> <strong id="lsBoardingTime" style="color:var(--vna-blue);">16:40</strong></span>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="page4GuideBtn" onclick="handleGuideBtnClick()" style="margin-top:10px;"><span data-i18n="p4_btn_guide">▶️ Location &amp; Directions</span></button>
+    </div>
+  </div>
+
+  <!-- PAGE 5: GUIDE + VIDEO -->
+  <div id="page5" class="screen">
+    <div class="card">
+      <h4 style="margin:0 0 10px;color:var(--vna-blue);" id="flowTitle">Location &amp; Directions</h4>
+      <div class="flow-path" id="flowPathData"></div>
+      <div style="margin-top:18px;">
+        <h5 style="margin:0 0 10px;color:var(--vna-blue);" data-i18n="p5_video_title">🎬 I-D Connection Guide</h5>
+        <div id="videoDisplay"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="background:#28a745;"><span data-i18n="p5_btn_mg">🤝 Book Meet &amp; Greet Service</span></button>
+  </div>
+
+  <!-- PAGE 6: STAFF NOTICE INPUT -->
+  <div id="page6" class="screen">
+    <div class="card staff-panel">
+      <div id="staffLoginPanel">
+        <h4>Đăng nhập nhân viên</h4>
+        <p>Nhập user và password để gửi/cập nhật thông báo cho khách.</p>
+        <div class="input-group">
+          <label>User</label>
+          <input type="text" id="staffUserInput" placeholder="VD: han.ops" autocomplete="username" autocapitalize="none" spellcheck="false">
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="staffPassInput" placeholder="Nhập mật khẩu" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary" type="button" onclick="staffLogin()">🔓 Đăng nhập</button>
+      </div>
+
+      <div id="staffManagePanel" style="display:none;">
+        <h4>Nhập thông tin từ hãng cho khách</h4>
+        <p id="staffLoggedInAs" style="font-weight:bold;color:#38597a;margin-bottom:10px;"></p>
+        <div class="input-group">
+          <label>PNR</label>
+          <input type="text" id="staffPnrInput" placeholder="VD: D45CQM" maxlength="10" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text">
+        </div>
+        <div class="input-group">
+          <label>Nội dung thông báo</label>
+          <input type="text" id="staffNoticeInput" placeholder="VD: Khách bị thất lạc hành lý, vui lòng liên hệ quầy Lost & Found.">
+        </div>
+        <button class="btn btn-primary" type="button" onclick="saveStaffNoticeFromForm()">💾 Lưu / Cập nhật thông báo</button>
+        <button class="btn btn-secondary" type="button" onclick="deleteStaffNoticeFromForm()">🗑️ Xóa thông báo theo PNR</button>
+        <button class="btn btn-secondary" type="button" onclick="staffLogout()">🚪 Đăng xuất nhân viên</button>
+        <div style="margin:10px 0 6px;font-size:12px;font-weight:bold;color:#4f6580;">Danh sách thông báo đã nhập:</div>
+        <div id="staffNoticeList" class="staff-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 8: D-I TRANSIT INFOGRAPHIC -->
+  <div id="page8" class="screen">
+    <div style="background:linear-gradient(135deg,#005A8C 0%,#007040 100%);color:white;margin:-20px -20px 16px;padding:18px 20px 14px;text-align:center;">
+      <div style="font-size:15px;font-weight:900;letter-spacing:.4px;margin-bottom:4px;">QUY TRÌNH NỔI CHUYẼN NỘI ĐỊA → QUỐC TẼ</div>
+      <div style="font-size:11px;opacity:.88;line-height:1.55;">Nối chuyến tại Nhà ga Nội Bài<br>T1 (Nội địa) → T2 (Quốc tế)</div>
+    </div>
+    <div id="diInfographicContainer" class="id-infographic"></div>
+  </div>
+</div>
+
+<script>
+// ===== CẤU HÌNH VIDEO (Admin chỉnh tại đây) =====
+var VIDEO_URL = 'https://www.youtube.com/watch?v=t8o_A919LeI';
+// ===================================================
+
+var historyStack = ['page1'];
+
+var _currentScenario = '';
+var currentLang = 'vi';
+var timerInterval;
+var isRemoteDataLoaded = false;
+var localPnrUrl = './PASSENGER PNR LIST.txt';
+var googleSheetUrl = 'https://docs.google.com/spreadsheets/d/1Scm2GkoLJpeyjosnSrQa7xolf_HEFmagBa8Bpx4FRyI/export?format=csv&gid=907606586';
+var noticeStorageKey = 'vnaStaffPassengerNotices';
+var staffSessionKey = 'vnaStaffLoggedInUser';
+var returnStateKey = 'vnaSmartwayReturnState';
+var _activePnr = ''; // PNR hành khách đang xem
+var _lastNoticeText = ''; // Nội dung tin nhắn lần trước để phát hiện tin mới
+var _lastDepDate = '';
+var _lastDepTime = '';
+var _audioCtx = null;
+
+// Mở khóa AudioContext ngay khi người dùng tương tác lần đầu
+function unlockAudio() {
+  if (_audioCtx) return;
+  try {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    _audioCtx = new Ctx();
+    // Phát âm thanh im lặng để unlock
+    var buf = _audioCtx.createBuffer(1, 1, 22050);
+    var src = _audioCtx.createBufferSource();
+    src.buffer = buf;
+    src.connect(_audioCtx.destination);
+    src.start(0);
+  } catch(e) {}
+}
+document.addEventListener('touchstart', unlockAudio, {once: true});
+document.addEventListener('click', unlockAudio, {once: true});
+
+// Xin quyền browser notification
+if ('Notification' in window && Notification.permission === 'default') {
+  Notification.requestPermission();
+}
+
+// ===== FIREBASE CONFIG =====
+var firebaseConfig = {
+  apiKey: "AIzaSyA0m5pdGzxLa4NZTLkynx6Rv7CVXtkCJec",
+  authDomain: "vna-smartway.firebaseapp.com",
+  projectId: "vna-smartway",
+  storageBucket: "vna-smartway.firebasestorage.app",
+  messagingSenderId: "821201769271",
+  appId: "1:821201769271:web:3a28fb5c5bb1e3564fc0b2"
+};
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+var _noticeCache = {};
+db.collection('notices').onSnapshot(function(snapshot) {
+  _noticeCache = {};
+  snapshot.forEach(function(doc) { _noticeCache[doc.id] = doc.data().message || ''; });
+  if (_activePnr) {
+    var nBox = document.getElementById('airlineNoticeBox');
+    var nText = document.getElementById('airlineNoticeText');
+    if (nBox && nText) {
+      var msg = _noticeCache[_activePnr] || '';
+      if (msg) {
+        nText.innerText = msg;
+        nBox.style.display = 'block';
+        // Chỉ báo âm thanh + notification khi là tin MỚI
+        if (msg !== _lastNoticeText) {
+          _lastNoticeText = msg;
+          triggerNoticeAlert();
+          showBrowserNotification(msg);
+        }
+      } else {
+        nText.innerText = '';
+        nBox.style.display = 'none';
+        _lastNoticeText = '';
+      }
+    }
+  }
+  renderStaffNoticeList();
+});
+// ===========================
+var staffAccounts = {
+  'han.ops': 'han@123',
+  'sgn.ops': 'sgn@123',
+  'supervisor': 'vna@2026'
+};
+
+// Test users for airline push-style messages by PNR.
+var passengerNotices = {
+  D45CQM: {
+    vi: 'Khách bị thất lạc hành lý, vui lòng liên hệ nhân viên quầy Lost & Found tại khu vực đến.',
+    en: 'Your baggage is delayed. Please contact Lost & Found staff at the arrival area.',
+    zh: '您的行李延误，请在到达区联系失物招领柜台工作人员。',
+    ja: 'お手荷物の遅延が発生しています。到着エリアのLost & Foundカウンターへお越しください。',
+    ko: '수하물 지연이 발생했습니다. 도착 구역 Lost & Found 카운터로 문의해 주세요.'
+  },
+  F9AN8A: {
+    vi: 'Cửa khởi hành có thể thay đổi. Vui lòng theo dõi bảng thông tin chuyến bay tại sân bay.',
+    en: 'Departure gate may change. Please monitor the airport flight information display.',
+    zh: '登机口可能变更，请留意机场航班信息显示屏。',
+    ja: '搭乗ゲートが変更される可能性があります。空港の案内表示をご確認ください。',
+    ko: '탑승구가 변경될 수 있습니다. 공항 안내 전광판을 확인해 주세요.'
+  },
+  FSUMDC: {
+    vi: 'Hành khách cần hỗ trợ đặc biệt, vui lòng liên hệ quầy dịch vụ Vietnam Airlines gần nhất.',
+    en: 'Special assistance is arranged. Please contact the nearest Vietnam Airlines service counter.',
+    zh: '您已安排特殊协助，请联系最近的越南航空服务柜台。',
+    ja: '特別サポートを手配しています。最寄りのベトナム航空サービスカウンターへお越しください。',
+    ko: '특별 지원이 준비되어 있습니다. 가까운 베트남항공 서비스 카운터로 문의해 주세요.'
+  }
+};
+
+var dict = {
+  vi: {
+    header_sub:'Trợ lý di chuyển', p2_title:'Vị trí của Quý khách', p2_desc:'Quý khách đang có mặt tại sân bay nào?',
+    p2_han:'Sân bay Quốc tế Nội Bài (HAN)', p2_sgn:'Sân bay Tân Sơn Nhất (SGN)', p3_loc:'Nội Bài (HAN)',
+    p3_prompt:'Quý khách vui lòng nhập mã đặt chỗ:',
+    p3_note:'',
+    p3_pnr:'Mã đặt chỗ (PNR):', p3_pnr_note:'Hệ thống sẽ tra cứu toàn bộ hành trình dựa trên mã này.',
+    p3_btn:'Tra cứu', analyze_loading:'Đang phân tích PNR và Lịch bay...',
+    p3_error_data:'Không tải được dữ liệu nguồn. Vui lòng kiểm tra quyền truy cập Google.',
+    p4_notice_title:'Tin nhắn từ hãng',
+    p4_countdown_label:'Thời gian đến lúc ĐÓNG CỬA TÀU BAY:',
+    p4_closed:'ĐÃ ĐÓNG CỬA',
+    p4_route:'Hành trình:', p4_arr:'Đến:', p4_dep:'Đi:',
+    p4_belt:'Băng chuyền:', p4_gate:'Cửa khởi hành:',
+    p4_view_img:'🖼️ Xem ảnh',
+    p4_conn:'Nối chuyến:', p4_board:'Lên tàu:',
+    p4_arr_time:'Giờ hạ cánh dự kiến: ', p4_dep_time:'Giờ khởi hành dự kiến: ',
+    status_transit_ii:'Nối chuyến Quốc tế - Quốc tế',
+    status_transit_id:'Nối chuyến Quốc tế - Nội địa',
+    status_transit_di:'Nối chuyến Nội địa - Quốc tế',
+    status_transit_dd:'Nối chuyến Nội địa - Nội địa',
+    status_arrival:'Khách đến',
+    status_departure:'Khách khởi hành',
+    p4_btn_guide:'▶️ Vị trí & Hướng dẫn',
+    p5_video_title:'🎬 Hướng dẫn nối chuyến I-D',
+    p5_btn_mg:'🤝 Đặt Dịch vụ Meet & Greet',
+    welcome:'Chào mừng quý khách', welcome_airport:'đến với sân bay quốc tế Nội Bài.',
+    welcome_check:'Xin quý khách vui lòng kiểm tra thông tin chuyến bay và hướng dẫn tiếp theo.',
+    alert_pnr:'Vui lòng nhập Mã PNR!', alert_notfound:'Không tìm thấy PNR: ',
+    flow_originating_title:'Hướng dẫn Khởi hành (Xuất phát từ HAN)',
+    flow_originating:'<div class="flow-step"><div class="flow-step-row">🚪 <span>Đến Sảnh Đi T1. Làm thủ tục và gửi hành lý.</span></div></div><div class="flow-step"><div class="flow-step-row">🛂 <span>Qua khu vực Soi chiếu An ninh Tầng 2.</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>Di chuyển đến <span class="gate-box">Cửa {G}</span>.</span></div></div>',
+    flow_id_title:'Nối chuyến Quốc tế - Nội địa (I-D)',
+    flow_id:'<div class="flow-step"><div class="flow-step-row">✈️ <span>Khách ra khỏi tàu bay.</span></div></div><div class="flow-step"><div class="flow-step-row">🤝 <span>Gặp nhân viên hỗ trợ nối chuyến.</span></div></div><div class="flow-step"><div class="flow-step-row">🛂 <span>Làm thủ tục nhập cảnh.</span></div></div><div class="flow-step"><div class="flow-step-row">🧳 <span>Nhận lại hành lý tại băng chuyền: <span class="highlight-box">Số {B}</span> để làm thủ tục hải quan.</span></div></div><div class="flow-step"><div class="flow-step-row">🛃 <span>Làm thủ tục hải quan.</span></div></div><div class="flow-step"><div class="flow-step-row">🚌 <span>Xe shuttle bus sang ga Nội địa (T1).</span></div></div><div class="flow-step"><div class="flow-step-row">🔒 <span>Kiểm tra an ninh nội địa T1.</span></div></div><div class="flow-step"><div class="flow-step-row">🚪 <span>Cửa khởi hành: <span class="gate-box">Số {G}</span>.</span></div></div>',
+    flow_di_title:'Nối chuyến Nội địa - Quốc tế (D-I)',
+    flow_di:'<div class="flow-step"><div class="flow-step-row">🚌 <span>Shuttle Bus sang Nhà ga T2 (Quốc tế).</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>Soi chiếu xuất cảnh và đến <span class="gate-box">Cửa {G}</span>.</span></div></div>',
+    flow_dd_title:'Nối chuyến Nội địa - Nội địa (D-D)',
+    flow_dd:'<div class="flow-step"><div class="flow-step-row">🛬 <span>Xuống tàu bay và theo biển chỉ dẫn nối chuyến nội địa.</span></div></div><div class="flow-step"><div class="flow-step-row">🔒 <span>Qua khu vực kiểm tra an ninh nội địa tại T1.</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>Di chuyển đến <span class="gate-box">Cửa {G}</span> cho chặng tiếp theo.</span></div></div>',
+    flow_arrival_title:'Hướng dẫn Khách Đến & Nhập cảnh',
+    flow_arrival:'<div class="flow-step"><div class="flow-step-row">🧳 <span>Nhận hành lý tại <span class="highlight-box">Băng chuyền {B}</span>.</span></div></div>'
+  },
+  en: {
+    header_sub:'Travel Assistant', p2_title:'Your Location', p2_desc:'Which airport are you currently at?',
+    p2_han:'Noi Bai International Airport (HAN)', p2_sgn:'Tan Son Nhat Airport (SGN)', p3_loc:'Noi Bai (HAN)',
+    p3_prompt:'Please enter your booking code:',
+    p3_note:'',
+    p3_pnr:'Booking Code (PNR):', p3_pnr_note:'The system will retrieve your full itinerary based on this code.',
+    p3_btn:'Look Up', analyze_loading:'Analyzing PNR and Flight Schedule...',
+    p3_error_data:'Unable to load source data. Please check Google access permissions.',
+    p4_notice_title:'Airline Notice',
+    p4_countdown_label:'Time until AIRCRAFT DOOR CLOSES:',
+    p4_closed:'DOOR CLOSED',
+    p4_route:'Itinerary:', p4_arr:'Arrival:', p4_dep:'Departure:',
+    p4_belt:'Baggage Belt:', p4_gate:'Departure Gate:',
+    p4_view_img:'🖼️ View Map',
+    p4_conn:'Connection Time:', p4_board:'Boarding:',
+    p4_arr_time:'Estimated landing: ', p4_dep_time:'Estimated departure: ',
+    status_transit_ii:'International - International Transit',
+    status_transit_id:'International - Domestic Transit',
+    status_transit_di:'Domestic - International Transit',
+    status_transit_dd:'Domestic - Domestic Transit',
+    status_arrival:'Arrival',
+    status_departure:'Departure',
+    p4_btn_guide:'▶️ Location & Directions',
+    p5_video_title:'🎬 I-D Connection Guide',
+    p5_btn_mg:'🤝 Book Meet & Greet Service',
+    welcome:'Welcome', welcome_airport:'to Noi Bai International Airport.',
+    welcome_check:'Please check your flight information and follow the instructions below.',
+    alert_pnr:'Please enter your PNR code!', alert_notfound:'PNR not found: ',
+    flow_originating_title:'Departure Guide (Originating from HAN)',
+    flow_originating:'<div class="flow-step"><div class="flow-step-row">🚪 <span>Go to Departure Hall T1. Check in and drop off baggage.</span></div></div><div class="flow-step"><div class="flow-step-row">🛂 <span>Pass through Security Screening on Floor 2.</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>Proceed to <span class="gate-box">Gate {G}</span>.</span></div></div>',
+    flow_id_title:'International - Domestic Transit (I-D)',
+    flow_id:'<div class="flow-step"><div class="flow-step-row">✈️ <span>Disembark the aircraft.</span></div></div><div class="flow-step"><div class="flow-step-row">🤝 <span>Meet the transit support staff.</span></div></div><div class="flow-step"><div class="flow-step-row">🛂 <span>Complete immigration procedures.</span></div></div><div class="flow-step"><div class="flow-step-row">🧳 <span>Collect your baggage at Belt <span class="highlight-box">{B}</span> to complete customs procedures.</span></div></div><div class="flow-step"><div class="flow-step-row">🛃 <span>Complete customs procedures.</span></div></div><div class="flow-step"><div class="flow-step-row">🚌 <span>Take the shuttle bus to Domestic Terminal T1.</span></div></div><div class="flow-step"><div class="flow-step-row">🔒 <span>Pass domestic security check at T1.</span></div></div><div class="flow-step"><div class="flow-step-row">🚪 <span>Departure Gate: <span class="gate-box">{G}</span>.</span></div></div>',
+    flow_di_title:'Domestic - International Transit (D-I)',
+    flow_di:'<div class="flow-step"><div class="flow-step-row">🚌 <span>Take the Shuttle Bus to International Terminal T2.</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>Pass departure screening and go to <span class="gate-box">Gate {G}</span>.</span></div></div>',
+    flow_dd_title:'Domestic - Domestic Transit (D-D)',
+    flow_dd:'<div class="flow-step"><div class="flow-step-row">🛬 <span>Disembark and follow domestic transfer signs.</span></div></div><div class="flow-step"><div class="flow-step-row">🔒 <span>Pass domestic security screening at T1.</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>Proceed to <span class="gate-box">Gate {G}</span> for your next flight.</span></div></div>',
+    flow_arrival_title:'Arrival & Immigration Guide',
+    flow_arrival:'<div class="flow-step"><div class="flow-step-row">🧳 <span>Collect baggage at <span class="highlight-box">Belt {B}</span>.</span></div></div>'
+  },
+  zh: {
+    header_sub:'出行助手', p2_title:'您的位置', p2_desc:'您目前在哪个机场？',
+    p2_han:'内排国际机场 (HAN)', p2_sgn:'新山一机场 (SGN)', p3_loc:'内排 (HAN)',
+    p3_prompt:'请您输入预订代码：',
+    p3_note:'',
+    p3_pnr:'预订代码 (PNR)：', p3_pnr_note:'系统将根据此代码检索您的完整行程。',
+    p3_btn:'查询', analyze_loading:'正在分析PNR和航班信息...',
+    p3_error_data:'无法加载数据源，请检查Google访问权限。',
+    p4_notice_title:'航司消息',
+    p4_countdown_label:'距离舱门关闭时间：',
+    p4_closed:'舱门已关闭',
+    p4_route:'行程：', p4_arr:'到达：', p4_dep:'出发：',
+    p4_belt:'行李转盘：', p4_gate:'登机口：',
+    p4_view_img:'🖼️ 查看地图',
+    p4_conn:'中转时间：', p4_board:'登机时间：',
+    p4_arr_time:'预计降落：', p4_dep_time:'预计起飞：',
+    status_transit_ii:'国际-国际中转',
+    status_transit_id:'国际-国内中转',
+    status_transit_di:'国内-国际中转',
+    status_transit_dd:'国内-国内中转',
+    status_arrival:'到达',
+    status_departure:'出发',
+    p4_btn_guide:'▶️ 位置和方向',
+    p5_video_title:'🎬 国际转国内中转指南',
+    p5_btn_mg:'🤝 预订接送服务',
+    welcome:'欢迎', welcome_airport:'到达内排国际机场。',
+    welcome_check:'请查看您的航班信息并按以下指示操作。',
+    alert_pnr:'请输入PNR代码！', alert_notfound:'未找到PNR：',
+    flow_originating_title:'出发指南（从HAN出发）',
+    flow_originating:'<div class="flow-step"><div class="flow-step-row">🚪 <span>前往T1出发大厅，办理值机并托运行李。</span></div></div><div class="flow-step"><div class="flow-step-row">🛂 <span>通过2楼安检区域。</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>前往<span class="gate-box">登机口 {G}</span>。</span></div></div>',
+    flow_di_title:'国内-国际中转 (D-I)',
+    flow_di:'<div class="flow-step"><div class="flow-step-row">🚌 <span>乘摆渡车前往国际航站楼T2。</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>通过出境安检，前往<span class="gate-box">登机口 {G}</span>。</span></div></div>',
+    flow_arrival_title:'到达及入境指南',
+    flow_arrival:'<div class="flow-step"><div class="flow-step-row">🧳 <span>在<span class="highlight-box">转盘 {B}</span>领取行李。</span></div></div>'
+  },
+  ja: {
+    header_sub:'旅行アシスタント', p2_title:'現在地', p2_desc:'現在どの空港にいますか？',
+    p2_han:'ノイバイ国際空港 (HAN)', p2_sgn:'タンソンニャット空港 (SGN)', p3_loc:'ノイバイ (HAN)',
+    p3_prompt:'予約コードを入力してください：',
+    p3_note:'',
+    p3_pnr:'予約コード (PNR)：', p3_pnr_note:'システムはこのコードに基づいて全行程を検索します。',
+    p3_btn:'検索', analyze_loading:'PNRとフライト情報を分析中...',
+    p3_error_data:'データソースを読み込めません。Googleアクセス権限をご確認ください。',
+    p4_notice_title:'航空会社からのお知らせ',
+    p4_countdown_label:'搭乗口閉鎖まであと：',
+    p4_closed:'搭乗口閉鎖',
+    p4_route:'旅程：', p4_arr:'到着：', p4_dep:'出発：',
+    p4_belt:'手荷物受取：', p4_gate:'搭乗口：',
+    p4_view_img:'🖼️ 地図を見る',
+    p4_conn:'乗り継ぎ時間：', p4_board:'搭乗開始：',
+    p4_arr_time:'着陸予定時刻：', p4_dep_time:'出発予定時刻：',
+    status_transit_ii:'国際線-国際線 乗り継ぎ',
+    status_transit_id:'国際線-国内線 乗り継ぎ',
+    status_transit_di:'国内線-国際線 乗り継ぎ',
+    status_transit_dd:'国内線-国内線 乗り継ぎ',
+    status_arrival:'到着',
+    status_departure:'出発',
+    p4_btn_guide:'▶️ 位置と方向',
+    p5_video_title:'🎬 国際線から国内線乗り継ぎガイド',
+    p5_btn_mg:'🤝 ミート＆グリートサービスを予約',
+    welcome:'ようこそ', welcome_airport:'ノイバイ国際空港へ。',
+    welcome_check:'フライト情報をご確認の上、以下の案内に従ってください。',
+    alert_pnr:'PNRコードを入力してください！', alert_notfound:'PNRが見つかりません：',
+    flow_originating_title:'出発ガイド（HANから出発）',
+    flow_originating:'<div class="flow-step"><div class="flow-step-row">🚪 <span>T1出発ロビーへ。チェックインと手荷物を預けてください。</span></div></div><div class="flow-step"><div class="flow-step-row">🛂 <span>2階の保安検査を通過してください。</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span><span class="gate-box">搭乗口 {G}</span>へ移動してください。</span></div></div>',
+    flow_di_title:'国内線→国際線乗り継ぎ (D-I)',
+    flow_di:'<div class="flow-step"><div class="flow-step-row">🚌 <span>シャトルバスで国際線ターミナルT2へ移動してください。</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>出国保安検査を通過し、<span class="gate-box">搭乗口 {G}</span>へ移動してください。</span></div></div>',
+    flow_arrival_title:'到着・入国ガイド',
+    flow_arrival:'<div class="flow-step"><div class="flow-step-row">🧳 <span><span class="highlight-box">ベルト {B}</span>で手荷物を受け取ってください。</span></div></div>'
+  },
+  ko: {
+    header_sub:'여행 도우미', p2_title:'현재 위치', p2_desc:'현재 어느 공항에 계십니까?',
+    p2_han:'노이바이 국제공항 (HAN)', p2_sgn:'떤선녓 공항 (SGN)', p3_loc:'노이바이 (HAN)',
+    p3_prompt:'예약 코드를 입력해 주세요:',
+    p3_note:'',
+    p3_pnr:'예약 코드 (PNR):', p3_pnr_note:'시스템이 이 코드를 기반으로 전체 여정을 조회합니다.',
+    p3_btn:'조회', analyze_loading:'PNR 및 항공편 정보 분석 중...',
+    p3_error_data:'데이터 소스를 불러올 수 없습니다. Google 접근 권한을 확인하세요.',
+    p4_notice_title:'항공사 안내',
+    p4_countdown_label:'항공기 탑승구 마감까지:',
+    p4_closed:'탑승구 마감',
+    p4_route:'여정：', p4_arr:'도착：', p4_dep:'출발：',
+    p4_belt:'수하물 벨트：', p4_gate:'탑승구：',
+    p4_view_img:'🖼️ 지도 보기',
+    p4_conn:'환승 시간：', p4_board:'탑승 시작：',
+    p4_arr_time:'예상 착륙 시각：', p4_dep_time:'예상 출발 시각：',
+    status_transit_ii:'국제선-국제선 환승',
+    status_transit_id:'국제선-국내선 환승',
+    status_transit_di:'국내선-국제선 환승',
+    status_transit_dd:'국내선-국내선 환승',
+    status_arrival:'도착',
+    status_departure:'출발',
+    p4_btn_guide:'▶️ 위치 및 방향',
+    p5_video_title:'🎬 국제선→국내선 환승 안내',
+    p5_btn_mg:'🤝 미트 & 그리트 서비스 예약',
+    welcome:'환영합니다', welcome_airport:'노이바이 국제공항에 오신 것을 환영합니다.',
+    welcome_check:'항공편 정보를 확인하고 아래 안내에 따라 이동해 주십시오.',
+    alert_pnr:'PNR 코드를 입력해 주세요!', alert_notfound:'PNR을 찾을 수 없습니다：',
+    flow_originating_title:'출발 안내 (HAN 출발)',
+    flow_originating:'<div class="flow-step"><div class="flow-step-row">🚪 <span>T1 출발 홀로 이동하여 체크인 및 수하물을 부쳐 주세요.</span></div></div><div class="flow-step"><div class="flow-step-row">🛂 <span>2층 보안 검색대를 통과하세요.</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span><span class="gate-box">탑승구 {G}</span>로 이동하세요.</span></div></div>',
+    flow_di_title:'국내선→국제선 환승 (D-I)',
+    flow_di:'<div class="flow-step"><div class="flow-step-row">🚌 <span>셔틀버스를 타고 국제선 T2로 이동하세요.</span></div></div><div class="flow-step"><div class="flow-step-row">✈️ <span>출국 보안 검색 후 <span class="gate-box">탑승구 {G}</span>로 이동하세요.</span></div></div>',
+    flow_arrival_title:'도착 및 입국 안내',
+    flow_arrival:'<div class="flow-step"><div class="flow-step-row">🧳 <span><span class="highlight-box">벨트 {B}</span>에서 수하물을 찾으세요.</span></div></div>'
+  }
+};
+
+var domesticAirportsVN = ['HAN','SGN','DAD','CXR','PQC','VCA','HPH','VII','THD','DIN','UIH','VDH','HUI','VCL','BMV','VKG','DLI','TBB','PXU','VCS'];
+var pnrDataText = '';
+var vmsText = '';
+
+
+async function fetchRemoteText(url) {
+  var u = new URL(url, window.location.href);
+  u.searchParams.set('_', Date.now());
+  var r = await fetch(u.toString(), {cache:'no-store'});
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.text();
+}
+
+async function initRemoteData(force) {
+  if (isRemoteDataLoaded && !force) return;
+  isRemoteDataLoaded = false;
+  try { pnrDataText = await fetchRemoteText(localPnrUrl); } catch(e) { pnrDataText = ''; }
+  try { vmsText = await fetchRemoteText(googleSheetUrl); } catch(e) { vmsText = fallbackVmsText; }
+  if (!vmsText) vmsText = fallbackVmsText;
+  isRemoteDataLoaded = true;
+}
+
+function parsePNR(text, pnrCode) {
+  var start = text.indexOf(pnrCode);
+  if (start === -1) return null;
+  var blockStart = text.lastIndexOf('RP/', start);
+  if (blockStart === -1) blockStart = start;
+  var nextRp = text.indexOf('RP/', blockStart + 3);
+  var block = nextRp !== -1 ? text.substring(blockStart, nextRp) : text.substring(blockStart);
+  var flights = [], passengerName = null;
+  var lines = block.split('\n');
+  for (var j = 0; j < lines.length; j++) {
+    var paxLine = lines[j].trim();
+    if (!paxLine.match(/^1\./)) continue;
+    var paxChunk = paxLine.replace(/^1\.\s*/, '').split(/\s+\d\./)[0].trim();
+    if (paxChunk && paxChunk.indexOf('/') !== -1) {
+      passengerName = formatPNRName(paxChunk);
+      break;
+    }
+  }
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (!line || line.indexOf('FLWN') !== -1) continue;
+    if (!passengerName && !line.match(/^\d+\s+VN\s*\d+/i)) {
+      var nm = line.match(/\b([A-Z'.\\-]+\/[A-Z'.\\-]+(?:\s+[A-Z'.\\-]+)*?)\s*(?:MR|MRS|MS|MSTR|MISS|DR|PROF)?\b/i);
+      if (nm && nm[1] && nm[1].indexOf('/') !== -1) passengerName = formatPNRName(nm[1]);
+    }
+    var fm = line.match(/\bVN\s*(\d{1,4})\b/i);
+    if (!fm) continue;
+    var rm = line.match(/\b([A-Z]{3})([A-Z]{3})\b/);
+    var dm = line.match(/\bVN\s*\d{1,4}\s+\S+\s+(\d{1,2}[A-Z]{3})\b/i);
+    flights.push({fltNo:'VN'+fm[1], origin:rm?rm[1]:null, dest:rm?rm[2]:null, date:dm?dm[1].toUpperCase():null});
+  }
+  return {flights:flights, passengerName:passengerName};
+}
+
+function formatPNRName(raw) {
+  var name = (raw || '').toUpperCase().trim();
+  // Remove passenger type annotations like (ADT), (CHD/31OCT14), etc.
+  name = name.replace(/\([^)]*\)/g, '').trim();
+  var parts = name.split('/');
+  if (parts.length < 2) return name;
+  var family = parts[0].trim();
+  var given = parts.slice(1).join('/').replace(/\s+/g, ' ').trim();
+  // Strip common title suffixes at the end, including attached forms (e.g. YASUYUKIMR).
+  given = given.replace(/\s*(?:MRS|MR|MS|MSTR|MISS|DR|PROF)\s*$/i, '').trim();
+  var full = (given + ' ' + family).replace(/\s+/g, ' ').trim().toLowerCase();
+  return full.replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+}
+
+function parseVMS(csv, fltNo, isArr) {
+  if (!csv) return null;
+  var lines = csv.trim().split('\n');
+  var sec = isArr ? 'CHUYẾN BAY ĐẾN' : 'CHUYẾN BAY ĐI';
+  var hi = -1;
+  for (var k = 0; k < lines.length; k++) { if (lines[k].indexOf(sec) !== -1) { hi = k; break; } }
+  if (hi === -1) return null;
+  var hl = -1;
+  for (var k = hi; k < lines.length; k++) {
+    if (lines[k].split(',').map(function(h){return h.trim().toUpperCase();}).indexOf('FLT NO') !== -1) { hl = k; break; }
+  }
+  if (hl === -1) return null;
+  var hdrs = lines[hl].split(',').map(function(h){return h.trim().toUpperCase();});
+  var idx = {};
+  hdrs.forEach(function(h,i){idx[h]=i;});
+  for (var i = hl+1; i < lines.length; i++) {
+    if (lines[i].indexOf('CHUYẾN BAY') !== -1) break;
+    var cols = lines[i].split(',');
+    if (!cols[idx['FLT NO']]) continue;
+    if (cols[idx['FLT NO']].trim().toUpperCase() !== fltNo.toUpperCase()) continue;
+    if (isArr) return {belt:(cols[idx['BELT']]||'TBA').trim(), time:(cols[idx['ETA']]||'').trim()};
+    return {gate:(cols[idx['GATE']]||'TBA').trim(), time:((cols[idx['ETD']]||cols[idx['STD']]||'')).trim()};
+  }
+  return null;
+}
+
+function timeMath(t1, t2, subtract) {
+  var p1=t1.split(':'), m1=parseInt(p1[0],10)*60+parseInt(p1[1],10);
+  if (subtract) {
+    var tot=m1-t2; if(tot<0)tot+=1440;
+    return (Math.floor(tot/60)<10?'0':'')+Math.floor(tot/60)+':'+(tot%60<10?'0':'')+(tot%60);
+  }
+  var p2=t2.split(':'), m2=parseInt(p2[0],10)*60+parseInt(p2[1],10);
+  if(m2<m1)m2+=1440; return m2-m1;
+}
+
+function toMins(ts) { var p=ts.split(':'); if(p.length<2)return null; return parseInt(p[0],10)*60+parseInt(p[1],10); }
+
+function pnrDateToKey(ds) {
+  if (!ds) return null;
+  var m = ds.match(/^(\d{1,2})([A-Z]{3})$/i);
+  if (!m) return null;
+  var mon = {JAN:0,FEB:1,MAR:2,APR:3,MAY:4,JUN:5,JUL:6,AUG:7,SEP:8,OCT:9,NOV:10,DEC:11};
+  var mm = mon[m[2].toUpperCase()];
+  if (mm === undefined) return null;
+  return {day:parseInt(m[1],10), month:mm};
+}
+
+function nearestDateFromPnr(ds, hhmm) {
+  var k = pnrDateToKey(ds);
+  if (!k) return null;
+  var mins = toMins(hhmm || '12:00');
+  if (mins === null) mins = 12 * 60;
+  var now = new Date();
+  var years = [now.getFullYear() - 1, now.getFullYear(), now.getFullYear() + 1];
+  var best = null;
+  for (var i = 0; i < years.length; i++) {
+    var d = new Date(years[i], k.month, k.day, Math.floor(mins / 60), mins % 60, 0, 0);
+    if (!best || Math.abs(d - now) < Math.abs(best - now)) best = d;
+  }
+  return best;
+}
+
+function selectNearestFlight(candidates) {
+  if (!candidates || !candidates.length) return null;
+  var best = null, now = new Date();
+  for (var i = 0; i < candidates.length; i++) {
+    var c = candidates[i];
+    var dt = nearestDateFromPnr(c.flight.date, c.time);
+    var score = dt ? Math.abs(dt - now) : Number.MAX_SAFE_INTEGER;
+    if (!best || score < best.score) best = {flight:c.flight, score:score};
+  }
+  return best ? best.flight : candidates[0].flight;
+}
+
+function getConnectionMinutes(arrDate, arrTime, depDate, depTime) {
+  if (!arrDate || !arrTime || !depDate || !depTime) return null;
+  var arrDt = nearestDateFromPnr(arrDate, arrTime);
+  var depDt = nearestDateFromPnr(depDate, depTime);
+  if (!arrDt || !depDt) return null;
+  if (depDt < arrDt) depDt.setFullYear(depDt.getFullYear() + 1);
+  return Math.round((depDt - arrDt) / 60000);
+}
+
+function startCountdown(mins) {
+  clearInterval(timerInterval);
+  var rem=mins;
+  document.getElementById('countdownBanner').style.display='block';
+  function upd() {
+    if(rem<=0){document.getElementById('countdownTimer').innerText=(dict[currentLang]||dict.vi).p4_closed;clearInterval(timerInterval);return;}
+    var h=Math.floor(rem/60),m=rem%60;
+    document.getElementById('countdownTimer').innerText=(h<10?'0':'')+h+':'+(m<10?'0':'')+m+':00';
+    rem--;
+  }
+  upd(); timerInterval=setInterval(upd,60000);
+}
+
+function getDoorCloseDiffMinutes(depDate, depTime) {
+  if (!depDate || !depTime) return null;
+  var depDt = nearestDateFromPnr(depDate, depTime);
+  if (!depDt) return null;
+  var closeDt = new Date(depDt.getTime() - 10 * 60000);
+  var now = new Date();
+  var diff = Math.floor((closeDt - now) / 60000);
+  return diff;
+}
+
+function updateCountdown(depDate, depTime) {
+  var diff = getDoorCloseDiffMinutes(depDate, depTime);
+  if (diff === null || diff <= 0) return false;
+  startCountdown(diff);
+  return true;
+}
+
+function toggleLangModal(){var m=document.getElementById('langModal');m.style.display=m.style.display==='block'?'none':'block';}
+function setLang(l){currentLang=l;toggleLangModal();applyTranslation();}
+function applyTranslation(){
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k=el.getAttribute('data-i18n');
+    if(dict[currentLang]&&dict[currentLang][k])el.innerText=dict[currentLang][k];
+  });
+}
+function startApp(l){currentLang=l;applyTranslation();goToPage('page2');}
+function goToPage(id){if(historyStack[historyStack.length-1]!==id)historyStack.push(id);renderScreen(id);}
+function goBack(){if(historyStack.length>1){historyStack.pop();renderScreen(historyStack[historyStack.length-1]);}}
+function renderScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  document.getElementById('backBtn').style.visibility=historyStack.length>1?'visible':'hidden';
+  window.scrollTo(0,0);
+}
+function normalizePnrValue(raw){
+  return String(raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '').trim();
+}
+
+function fillDemoPNR(pnr){
+  var pnrEl = document.getElementById('pnrInput');
+  if (!pnrEl) return;
+  pnrEl.value = normalizePnrValue(pnr);
+  pnrEl.focus();
+}
+
+function openBeltImage(n){
+  var imgs={'1':'PLACEHOLDER_ID_1','2':'PLACEHOLDER_ID_2','3':'PLACEHOLDER_ID_3','4':'PLACEHOLDER_ID_4','5':'PLACEHOLDER_ID_5'};
+  window.open(imgs[n]?'https://drive.google.com/uc?export=view&id='+imgs[n]:'https://placehold.co/400x300?text=Belt+'+n,'_blank');
+}
+
+function extractGoogleDriveFileId(url) {
+  if (!url) return null;
+  var p;
+  p = url.match(/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]+)/i);
+  if (p) return p[1];
+  p = url.match(/[?&]id=([A-Za-z0-9_-]+)/i);
+  if (p) return p[1];
+  p = url.match(/drive\.usercontent\.google\.com\/[^?]*[?&]id=([A-Za-z0-9_-]+)/i);
+  if (p) return p[1];
+  return null;
+}
+
+function renderVideoDisplay(url) {
+  var d = document.getElementById('videoDisplay');
+  if (!d) return;
+  if (!url) {
+    d.innerHTML = '<div class="video-placeholder"><div class="icon">🎬</div><div style="padding:0 20px;">Video hướng dẫn chưa được cấu hình</div><div style="font-size:11px;color:#666;">Liên hệ admin để cập nhật</div></div>';
+    return;
+  }
+  if (url.indexOf('drive.google.com/drive/folders/') !== -1) {
+    d.innerHTML = '<div class="video-placeholder" style="background:#111;border:2px dashed var(--vna-gold);color:#f5c2c2;padding:20px;box-sizing:border-box;height:auto;min-height:200px;"><div class="icon">🗂️</div><div style="font-weight:bold;margin-bottom:8px;color:#ff8b8b;">Thư mục Google Drive</div><div style="padding:0 10px;line-height:1.5;color:#e0e0e0;font-size:13px;">Đây là link thư mục Google Drive. Vui lòng chia sẻ link file video cụ thể (dạng /file/d/ID/view) để nhúng video.</div></div>';
+    return;
+  }
+  var driveId = extractGoogleDriveFileId(url);
+  if (driveId) {
+    d.innerHTML = '<iframe src="https://drive.google.com/file/d/'+driveId+'/preview" frameborder="0" allowfullscreen></iframe>';
+    return;
+  }
+  var yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_\-]{11})/);
+  if (yt) { 
+    d.innerHTML = '<iframe src="https://www.youtube.com/embed/'+yt[1]+'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'; 
+    return; 
+  }
+  d.innerHTML = '<video controls playsinline src="'+url+'" onerror="this.outerHTML=\'<div class=&quot;video-placeholder&quot; style=&quot;background:#111;border:2px dashed var(--vna-gold);color:#f5c2c2;padding:20px;box-sizing:border-box;height:auto;min-height:200px;&quot;><div class=&quot;icon&quot;>⚠️</div><div style=&quot;font-weight:bold;margin-bottom:8px;color:#ff8b8b;&quot;>Không phát được video</div><div style=&quot;padding:0 10px;line-height:1.5;color:#e0e0e0;font-size:13px;&quot;>Nếu là Google Drive, hãy bật quyền \"Anyone with the link - Viewer\" và dùng link file, không dùng link thư mục.</div></div>\'"><source src="'+url+'" type="video/mp4">Trình duyệt không hỗ trợ video.</video>';
+}
+
+function playNoticeAlertSound() {
+  try {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    var ctx = _audioCtx || new Ctx();
+    if (!_audioCtx) _audioCtx = ctx;
+    if (ctx.state === 'suspended') ctx.resume();
+    var now = ctx.currentTime;
+    // 3 tiếng chuông rõ ràng
+    var bells = [
+      {t: 0,    freq: 1046, vol: 0.45, dur: 0.5},
+      {t: 0.55, freq: 1318, vol: 0.45, dur: 0.5},
+      {t: 1.1,  freq: 1046, vol: 0.45, dur: 0.7},
+    ];
+    bells.forEach(function(b) {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = b.freq;
+      gain.gain.setValueAtTime(0.0001, now + b.t);
+      gain.gain.exponentialRampToValueAtTime(b.vol, now + b.t + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + b.t + b.dur);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + b.t);
+      osc.stop(now + b.t + b.dur + 0.05);
+    });
+    setTimeout(function(){ try { ctx.close(); } catch(e) {} }, 2500);
+  } catch (e) {}
+}
+
+function showBrowserNotification(msg) {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'granted') {
+    new Notification('🔔 Thông báo từ Vietnam Airlines', {
+      body: msg,
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Vietnam_Airlines_logo.svg/120px-Vietnam_Airlines_logo.svg.png',
+      requireInteraction: true
+    });
+  } else if (Notification.permission === 'default') {
+    Notification.requestPermission().then(function(p) {
+      if (p === 'granted') {
+        new Notification('🔔 Thông báo từ Vietnam Airlines', {
+          body: msg,
+          icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Vietnam_Airlines_logo.svg/120px-Vietnam_Airlines_logo.svg.png',
+          requireInteraction: true
+        });
+      }
+    });
+  }
+}
+
+function triggerNoticeAlert() {
+  var box = document.getElementById('airlineNoticeBox');
+  if (!box) return;
+  box.classList.remove('alerting');
+  void box.offsetWidth;
+  box.classList.add('alerting');
+  setTimeout(function(){ box.classList.remove('alerting'); }, 3200);
+  playNoticeAlertSound();
+  if (navigator && typeof navigator.vibrate === 'function') navigator.vibrate([120, 80, 120]);
+}
+
+function getNoticeTextByPnr(pnr) {
+  if (!pnr) return '';
+  var cached = _noticeCache[pnr.toUpperCase()];
+  if (cached) return cached;
+  var data = passengerNotices[pnr.toUpperCase()];
+  if (!data) return '';
+  return data[currentLang] || data.vi || '';
+}
+
+function loadStaffNoticeMap() {
+  return _noticeCache;
+}
+
+function saveStaffNoticeMap(map) {
+  // deprecated - dùng Firestore trực tiếp
+}
+
+function renderStaffNoticeList() {
+  var box = document.getElementById('staffNoticeList');
+  if (!box) return;
+  var keys = Object.keys(_noticeCache).sort();
+  if (!keys.length) {
+    box.innerHTML = '<div class="staff-item" style="color:#8a97a5;">Chưa có thông báo nào được nhập.</div>';
+    return;
+  }
+  box.innerHTML = keys.map(function(k){
+    return '<div class="staff-item"><strong>'+k+'</strong>: '+String(_noticeCache[k]).replace(/</g,'&lt;')+'</div>';
+  }).join('');
+}
+
+function getLoggedInStaffUser() {
+  return localStorage.getItem(staffSessionKey) || '';
+}
+
+function renderStaffAuthView() {
+  var loginPanel = document.getElementById('staffLoginPanel');
+  var managePanel = document.getElementById('staffManagePanel');
+  var loggedAs = document.getElementById('staffLoggedInAs');
+  var staffPnrEl = document.getElementById('staffPnrInput');
+  var user = getLoggedInStaffUser();
+  if (!loginPanel || !managePanel) return;
+  if (user) {
+    loginPanel.style.display = 'none';
+    managePanel.style.display = 'block';
+    if (loggedAs) loggedAs.innerText = 'Đăng nhập bởi: ' + user;
+    renderStaffNoticeList();
+    if (staffPnrEl) {
+      setTimeout(function() { staffPnrEl.focus(); }, 0);
+    }
+  } else {
+    loginPanel.style.display = 'block';
+    managePanel.style.display = 'none';
+  }
+}
+
+function staffLogin() {
+  var uEl = document.getElementById('staffUserInput');
+  var pEl = document.getElementById('staffPassInput');
+  var user = (uEl && uEl.value ? uEl.value : '').toLowerCase().trim();
+  var pass = (pEl && pEl.value ? pEl.value : '').trim();
+  if (!user || !pass) { alert('Vui lòng nhập user và password.'); return; }
+  if (staffAccounts[user] && staffAccounts[user] === pass) {
+    localStorage.setItem(staffSessionKey, user);
+    if (pEl) pEl.value = '';
+    renderStaffAuthView();
+    alert('Đăng nhập thành công.');
+  } else {
+    alert('Sai user hoặc password.');
+  }
+}
+
+function staffLogout() {
+  localStorage.removeItem(staffSessionKey);
+  renderStaffAuthView();
+}
+
+function openStaffNoticePage() {
+  goToPage('page6');
+  renderStaffAuthView();
+}
+
+function saveStaffNoticeFromForm() {
+  if (!getLoggedInStaffUser()) { alert('Vui lòng đăng nhập nhân viên trước.'); return; }
+  var pnrEl = document.getElementById('staffPnrInput');
+  var msgEl = document.getElementById('staffNoticeInput');
+  var pnr = normalizePnrValue(pnrEl ? pnrEl.value : '');
+  if (pnrEl) pnrEl.value = pnr;
+  var msg = (msgEl.value || '').trim();
+  if (!pnr) { alert('Vui lòng nhập PNR.'); return; }
+  if (!msg) { alert('Vui lòng nhập nội dung thông báo.'); return; }
+  db.collection('notices').doc(pnr).set({
+    message: msg,
+    updatedBy: getLoggedInStaffUser(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function() {
+    alert('Đã lưu thông báo cho PNR ' + pnr + '.');
+  }).catch(function(e) {
+    alert('Lỗi lưu Firestore: ' + e.message);
+  });
+}
+
+function deleteStaffNoticeFromForm() {
+  if (!getLoggedInStaffUser()) { alert('Vui lòng đăng nhập nhân viên trước.'); return; }
+  var pnrEl = document.getElementById('staffPnrInput');
+  var pnr = normalizePnrValue(pnrEl ? pnrEl.value : '');
+  if (pnrEl) pnrEl.value = pnr;
+  if (!pnr) { alert('Vui lòng nhập PNR để xóa.'); return; }
+  if (!_noticeCache[pnr]) { alert('PNR này chưa có thông báo do nhân viên nhập.'); return; }
+  db.collection('notices').doc(pnr).delete().then(function() {
+    alert('Đã xóa thông báo cho PNR ' + pnr + '.');
+  }).catch(function(e) {
+    alert('Lỗi xóa Firestore: ' + e.message);
+  });
+}
+
+async function processAPI() {
+  var pnrEl = document.getElementById('pnrInput');
+  var pnr = normalizePnrValue(pnrEl ? pnrEl.value : '');
+  if (pnrEl) pnrEl.value = pnr;
+  _activePnr = pnr;
+  var btn = document.querySelector('#page3 .btn-primary');
+  if (!pnr) { alert((dict[currentLang]||dict.vi).alert_pnr); return; }
+  document.getElementById('btnProcessText').innerText = (dict[currentLang]||{}).analyze_loading || 'Đang phân tích...';
+  btn.style.opacity = '0.7';
+  await initRemoteData(true);
+  if (!pnrDataText) {
+    alert((dict[currentLang]||dict.vi).p3_error_data);
+    btn.style.opacity='1';
+    document.getElementById('btnProcessText').innerText=(dict[currentLang]||{}).p3_btn||'Tra cứu';
+    return;
+  }
+  setTimeout(function() {
+    var res = parsePNR(pnrDataText, pnr);
+    var flights = res ? res.flights : null;
+    var pname = res ? res.passengerName : null;
+    if (!flights || !flights.length) {
+      alert((dict[currentLang]||dict.vi).alert_notfound + pnr);
+      btn.style.opacity='1';
+      document.getElementById('btnProcessText').innerText=(dict[currentLang]||{}).p3_btn||'Tra cứu';
+      return;
+    }
+    var wEl = document.getElementById('welcomeMessage');
+    var d0=dict[currentLang]||dict.vi; wEl.innerText = d0.welcome + (pname?' '+pname+' ':' ') + d0.welcome_airport + '\n' + d0.welcome_check;
+    wEl.style.display='block';
+    var nBox = document.getElementById('airlineNoticeBox');
+    var nText = document.getElementById('airlineNoticeText');
+    var noticeText = getNoticeTextByPnr(pnr);
+    if (noticeText) {
+      nText.innerText = noticeText;
+      nBox.style.display = 'block';
+      triggerNoticeAlert();
+    } else {
+      nText.innerText = '';
+      nBox.style.display = 'none';
+    }
+    var arrCandidates=[], depCandidates=[];
+    flights.forEach(function(f){
+      if (f.dest === 'HAN') {
+        var ai = parseVMS(vmsText, f.fltNo, true);
+        arrCandidates.push({flight:f, time:ai?ai.time:null});
+      }
+      if (f.origin === 'HAN') {
+        var di = parseVMS(vmsText, f.fltNo, false);
+        depCandidates.push({flight:f, time:di?di.time:null});
+      }
+    });
+    var arrFlt = selectNearestFlight(arrCandidates);
+    var depFlt = selectNearestFlight(depCandidates);
+    var arrInfo=arrFlt?parseVMS(vmsText,arrFlt.fltNo,true):null;
+    var depInfo=depFlt?parseVMS(vmsText,depFlt.fltNo,false):null;
+    var connMins = (arrFlt&&depFlt&&arrInfo&&depInfo) ? getConnectionMinutes(arrFlt.date, arrInfo.time, depFlt.date, depInfo.time) : null;
+    if (connMins !== null && connMins >= 1440) {
+      var arrDt = nearestDateFromPnr(arrFlt.date, arrInfo.time);
+      var depDt = nearestDateFromPnr(depFlt.date, depInfo.time);
+      var now = new Date();
+      var arrDelta = arrDt ? Math.abs(arrDt - now) : Number.MAX_SAFE_INTEGER;
+      var depDelta = depDt ? Math.abs(depDt - now) : Number.MAX_SAFE_INTEGER;
+      if (arrDelta <= depDelta) {
+        depFlt = null;
+        depInfo = null;
+      } else {
+        arrFlt = null;
+        arrInfo = null;
+      }
+    }
+    var isArrDom=arrFlt?domesticAirportsVN.indexOf(arrFlt.origin)!==-1:false;
+    var isDepDom=depFlt?domesticAirportsVN.indexOf(depFlt.dest)!==-1:false;
+    var sc='';
+    if(arrFlt&&depFlt){
+      if(!isArrDom && !isDepDom) sc='transit_ii';
+      else if(!isArrDom && isDepDom) sc='transit_id';
+      else if(isArrDom && !isDepDom) sc='transit_di';
+      else sc='transit_dd';
+    } else if(arrFlt) {
+      sc='arrival';
+    } else {
+      sc='departure';
+    }
+    document.getElementById('liveStatusBoard').style.display='block';
+    document.getElementById('lsRoute').innerText=(arrFlt?arrFlt.origin+' ✈️ ':'')+' HAN'+(depFlt?' ✈️ '+depFlt.dest:'');
+    var ldStatus = dict[currentLang] || dict.vi;
+    var statusLabels = {
+      transit_ii: ldStatus.status_transit_ii || dict.vi.status_transit_ii,
+      transit_id: ldStatus.status_transit_id || dict.vi.status_transit_id,
+      transit_di: ldStatus.status_transit_di || dict.vi.status_transit_di,
+      transit_dd: ldStatus.status_transit_dd || dict.vi.status_transit_dd,
+      arrival: ldStatus.status_arrival || dict.vi.status_arrival,
+      departure: ldStatus.status_departure || dict.vi.status_departure
+    };
+    document.getElementById('lsStatus').innerText=statusLabels[sc] || sc.toUpperCase();
+    var show=function(id,v){document.getElementById(id).style.display=v?'flex':'none';};
+    if(arrFlt&&arrInfo){
+      show('rowArrival',1);show('rowArrivalTime',1);show('rowArrivalBelt',1);
+      document.getElementById('lsArrFlt').innerText=arrFlt.fltNo+' ('+(arrFlt.date?arrFlt.date+', ':'')+arrFlt.origin+' → HAN)';
+      document.getElementById('lsArrTime').innerText=(dict[currentLang]||dict.vi).p4_arr_time+arrInfo.time;
+      document.getElementById('lsBelt').innerText=arrInfo.belt;
+    } else { show('rowArrival',0);show('rowArrivalTime',0);show('rowArrivalBelt',0); }
+    if(depFlt&&depInfo){
+      show('rowDeparture',1);show('rowDepartureTime',1);show('rowDepartureGate',1);show('rowDepartureBoarding',1);
+      document.getElementById('lsDepFlt').innerText=depFlt.fltNo+' ('+(depFlt.date?depFlt.date+', ':'')+'HAN → '+depFlt.dest+')';
+      document.getElementById('lsDepTime').innerText=(dict[currentLang]||dict.vi).p4_dep_time+depInfo.time;
+      document.getElementById('lsGate').innerText=depInfo.gate;
+      document.getElementById('lsBoardingTimeDep').innerText=timeMath(depInfo.time,40,true);
+      _lastDepDate = depFlt.date || '';
+      _lastDepTime = depInfo.time || '';
+    } else {
+      show('rowDeparture',0);show('rowDepartureTime',0);show('rowDepartureGate',0);show('rowDepartureBoarding',0);
+      _lastDepDate = '';
+      _lastDepTime = '';
+    }
+    document.getElementById('countdownBanner').style.display='none';
+    clearInterval(timerInterval);
+    var cv=false; if(depFlt&&depInfo)cv=updateCountdown(depFlt.date, depInfo.time);
+    if(arrFlt&&depFlt&&arrInfo&&depInfo){
+      var dm=getConnectionMinutes(arrFlt.date, arrInfo.time, depFlt.date, depInfo.time);
+      if (dm !== null && dm >= 0 && dm < 1440) {
+        show('rowConn',1);
+        document.getElementById('lsConnTime').innerText=Math.floor(dm/60)+'h '+(dm%60)+'m';
+        document.getElementById('lsBoardingTime').innerText=timeMath(depInfo.time,40,true);
+      } else {
+        show('rowConn',0);
+      }
+    } else show('rowConn',0);
+    if(!cv)document.getElementById('countdownBanner').style.display='none';
+    var flow=document.getElementById('flowPathData');
+    var g=(depInfo&&depInfo.gate)?depInfo.gate:'TBA';
+    var b=(arrInfo&&arrInfo.belt)?arrInfo.belt:'TBA';
+    var ld=dict[currentLang]||dict.vi;
+    var fmap={
+      departure:[ld.flow_originating_title || (dict.vi.flow_originating_title||''), (ld.flow_originating || dict.vi.flow_originating).replace(/{G}/g,g)],
+      transit_id:[ld.flow_id_title || dict.vi.flow_id_title, (ld.flow_id || dict.vi.flow_id).replace(/{G}/g,g).replace(/{B}/g,b)],
+      transit_di:[ld.flow_di_title, ld.flow_di.replace(/{G}/g,g)],
+      transit_dd:[ld.flow_dd_title || dict.vi.flow_dd_title, (ld.flow_dd || dict.vi.flow_dd).replace(/{G}/g,g)],
+      arrival:[ld.flow_arrival_title, ld.flow_arrival.replace(/{B}/g,b)]
+    };
+    _currentScenario = sc;
+    var guideBtn = document.getElementById('page4GuideBtn');
+    if (guideBtn) {
+      if (sc === 'transit_di') {
+        guideBtn.innerHTML = '<span>📊 Xem Quy Trình Nối Chuyến D-I</span>';
+      } else {
+        guideBtn.innerHTML = '<span data-i18n="p4_btn_guide">▶️ Vị trí &amp; Hướng dẫn</span>';
+        applyTranslation();
+      }
+    }
+    if(fmap[sc]){
+      document.getElementById('flowTitle').innerText = fmap[sc][0];
+      flow.innerHTML = fmap[sc][1];
+    } else {
+      document.getElementById('flowTitle').innerText = '';
+      flow.innerHTML = '';
+    }
+    document.getElementById('btnProcessText').innerText=(dict[currentLang]||{}).p3_btn||'Tra cứu';
+    btn.style.opacity='1';
+    goToPage('page4');
+  }, 1200);
+}
+
+// ===== D-I TRANSIT INFOGRAPHIC =====
+var diTransitSteps = [
+  {num:1, icon:'🏢', title:'QUẦY HỖ TRỢ NỐI CHUYẾN', desc:'Vào quầy hỗ trợ nối chuyến khi vào nhà ga'},
+  {num:2, icon:'🚌', title:'SHUTTLE BUS', desc:'Ra xe shuttle bus theo hướng dẫn'},
+  {num:3, icon:'🏛️', title:'NHÀ GA QUỐC TẾ (T2)', desc:'Xe shuttle đưa sang nhà ga Quốc tế T2'},
+  {num:4, icon:'🔍', title:'AN NINH SOI CHIẾU', desc:'Qua an ninh soi chiếu → di chuyển đến cửa lên tàu số {G}'},
+  {num:5, icon:'✈️', title:'CHUYẼN BAY TIẼP THEO', desc:'Hành lý được nhân viên tự động chuyển sang chuyến bay tiếp theo'}
+];
+
+function renderDIInfographic(gate) {
+  var c = document.getElementById('diInfographicContainer');
+  if (!c) return;
+  var html = '';
+  // Notice banner
+  html += '<div style="background:#fff8dc;border:1.5px solid var(--vna-gold);border-radius:12px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;">';
+  html += '<span style="font-size:20px;flex-shrink:0;">ℹ️</span>';
+  html += '<div><div style="font-weight:900;font-size:13px;color:#7a5600;margin-bottom:2px;">Nếu hành lý làm thủ tục thẳng</div>';
+  html += '<div style="font-size:12px;color:#8a6a20;line-height:1.5;">Quý khách không phải nhận lại hành lý. Nhân viên sẽ tự động chuyển hành lý sang chuyến bay tiếp theo.</div>';
+  html += '</div></div>';
+  for (var i = 0; i < diTransitSteps.length; i++) {
+    var s = diTransitSteps[i];
+    var isOdd = s.num % 2 === 1;
+    var desc = s.desc.replace('{G}', gate||'TBA');
+    html += '<div class="id-step-pair '+(isOdd?'odd':'even')+'">'; 
+    html += '<div class="id-step-box">';
+    html += '<div class="id-step-circle">'+s.num+'</div>';
+    html += '<span class="id-step-icon">'+s.icon+'</span>';
+    html += '<div class="id-step-title">'+s.title+'</div>';
+    html += '<div class="id-step-desc">'+desc+'</div>';
+    html += '</div></div>';
+    if (i < diTransitSteps.length - 1) {
+      html += '<div class="id-arrow-down">↓</div>';
+    }
+  }
+  c.innerHTML = html;
+}
+
+function goToDIInfographic() {
+  var gate = (document.getElementById('lsGate')||{}).innerText || 'TBA';
+  renderDIInfographic(gate);
+  goToPage('page8');
+}
+
+function saveReturnStateBeforeGuide() {
+  try {
+    var state = {
+      lang: currentLang || 'vi',
+      scenario: _currentScenario || '',
+      texts: {
+        welcomeMessage: (document.getElementById('welcomeMessage') || {}).innerText || '',
+        airlineNoticeText: (document.getElementById('airlineNoticeText') || {}).innerText || '',
+        lsRoute: (document.getElementById('lsRoute') || {}).innerText || '',
+        lsStatus: (document.getElementById('lsStatus') || {}).innerText || '',
+        lsArrFlt: (document.getElementById('lsArrFlt') || {}).innerText || '',
+        lsArrTime: (document.getElementById('lsArrTime') || {}).innerText || '',
+        lsBelt: (document.getElementById('lsBelt') || {}).innerText || '',
+        lsDepFlt: (document.getElementById('lsDepFlt') || {}).innerText || '',
+        lsDepTime: (document.getElementById('lsDepTime') || {}).innerText || '',
+        lsGate: (document.getElementById('lsGate') || {}).innerText || '',
+        lsBoardingTimeDep: (document.getElementById('lsBoardingTimeDep') || {}).innerText || '',
+        lsConnTime: (document.getElementById('lsConnTime') || {}).innerText || '',
+        lsBoardingTime: (document.getElementById('lsBoardingTime') || {}).innerText || '',
+        flowTitle: (document.getElementById('flowTitle') || {}).innerText || ''
+      },
+      flowHtml: (document.getElementById('flowPathData') || {}).innerHTML || '',
+      rowVisible: {
+        rowArrival: ((document.getElementById('rowArrival') || {}).style || {}).display !== 'none',
+        rowArrivalTime: ((document.getElementById('rowArrivalTime') || {}).style || {}).display !== 'none',
+        rowArrivalBelt: ((document.getElementById('rowArrivalBelt') || {}).style || {}).display !== 'none',
+        rowDeparture: ((document.getElementById('rowDeparture') || {}).style || {}).display !== 'none',
+        rowDepartureTime: ((document.getElementById('rowDepartureTime') || {}).style || {}).display !== 'none',
+        rowDepartureGate: ((document.getElementById('rowDepartureGate') || {}).style || {}).display !== 'none',
+        rowDepartureBoarding: ((document.getElementById('rowDepartureBoarding') || {}).style || {}).display !== 'none',
+        rowConn: ((document.getElementById('rowConn') || {}).style || {}).display !== 'none'
+      },
+      noticeVisible: ((document.getElementById('airlineNoticeBox') || {}).style || {}).display !== 'none',
+      countdownVisible: ((document.getElementById('countdownBanner') || {}).style || {}).display !== 'none',
+      depDate: _lastDepDate || '',
+      depTime: _lastDepTime || ''
+    };
+    sessionStorage.setItem(returnStateKey, JSON.stringify(state));
+  } catch(e) {}
+}
+
+function restoreReturnStateIfAny() {
+  try {
+    var raw = sessionStorage.getItem(returnStateKey);
+    if (!raw) return false;
+    sessionStorage.removeItem(returnStateKey);
+    var state = JSON.parse(raw);
+    if (state.lang) currentLang = state.lang;
+    applyTranslation();
+    _currentScenario = state.scenario || '';
+    var texts = state.texts || {};
+    Object.keys(texts).forEach(function(id){
+      var el = document.getElementById(id);
+      if (el && typeof texts[id] === 'string') el.innerText = texts[id];
+    });
+    if (typeof state.flowHtml === 'string') {
+      var flowEl = document.getElementById('flowPathData');
+      if (flowEl) flowEl.innerHTML = state.flowHtml;
+    }
+    var rowVisible = state.rowVisible || {};
+    Object.keys(rowVisible).forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) el.style.display = rowVisible[id] ? 'flex' : 'none';
+    });
+    var nBox = document.getElementById('airlineNoticeBox');
+    if (nBox) nBox.style.display = state.noticeVisible ? 'block' : 'none';
+    var cBox = document.getElementById('countdownBanner');
+    clearInterval(timerInterval);
+    var countdownOk = false;
+    if (state.depDate && state.depTime) countdownOk = updateCountdown(state.depDate, state.depTime);
+    if (cBox && !countdownOk) cBox.style.display = 'none';
+    var liveBoard = document.getElementById('liveStatusBoard');
+    if (liveBoard) liveBoard.style.display = 'block';
+    var guideBtn = document.getElementById('page4GuideBtn');
+    if (guideBtn) {
+      if (_currentScenario === 'transit_di') {
+        guideBtn.innerHTML = '<span>📊 Xem Quy Trình Nối Chuyến D-I</span>';
+      } else {
+        guideBtn.innerHTML = '<span data-i18n="p4_btn_guide">▶️ Vị trí &amp; Hướng dẫn</span>';
+        applyTranslation();
+      }
+    }
+    historyStack = ['page1', 'page4'];
+    renderScreen('page4');
+    return true;
+  } catch(e) {
+    try { sessionStorage.removeItem(returnStateKey); } catch(e2) {}
+    return false;
+  }
+}
+
+function goToIDGuidePage() {
+  saveReturnStateBeforeGuide();
+  var lang = currentLang || 'vi';
+  var belt = (document.getElementById('lsBelt') || {}).innerText || 'TBA';
+  var arr = (document.getElementById('lsArrFlt') || {}).innerText || '';
+  var gate = (document.getElementById('lsGate') || {}).innerText || 'TBA';
+  var boarding = (document.getElementById('lsBoardingTimeDep') || {}).innerText || '';
+  var params = new URLSearchParams();
+  params.set('lang', lang);
+  params.set('belt', belt);
+  params.set('arr', arr);
+  params.set('gate', gate);
+  params.set('boarding', boarding);
+  window.location.href = 'ID.html?' + params.toString();
+}
+
+function goToIIGuidePage() {
+  saveReturnStateBeforeGuide();
+  var lang = currentLang || 'vi';
+  var arr = (document.getElementById('lsArrFlt') || {}).innerText || '';
+  var gate = (document.getElementById('lsGate') || {}).innerText || 'TBA';
+  var boarding = (document.getElementById('lsBoardingTimeDep') || {}).innerText || '';
+  var params = new URLSearchParams();
+  params.set('lang', lang);
+  params.set('arr', arr);
+  params.set('gate', gate);
+  params.set('boarding', boarding);
+  window.location.href = 'II.html?' + params.toString();
+}
+// ===================================
+
+function handleGuideBtnClick() {
+  if (_currentScenario === 'transit_ii') {
+    goToIIGuidePage();
+  } else if (_currentScenario === 'transit_id') {
+    goToIDGuidePage();
+  } else if (_currentScenario === 'transit_di') {
+    goToDIInfographic();
+  } else {
+    goToPage('page5');
+  }
+}
+// ===================================
+
+document.addEventListener('DOMContentLoaded', function() {
+  var pnrEl = document.getElementById('pnrInput');
+  var staffPnrEl = document.getElementById('staffPnrInput');
+  var staffMsgEl = document.getElementById('staffNoticeInput');
+  var staffPassEl = document.getElementById('staffPassInput');
+  if (pnrEl) {
+    pnrEl.addEventListener('input', function() {
+      pnrEl.value = normalizePnrValue(pnrEl.value);
+    });
+    pnrEl.addEventListener('keydown', function(evt) {
+      if (evt.key === 'Enter') {
+        evt.preventDefault();
+        processAPI();
+      }
+    });
+  }
+  if (staffPnrEl) {
+    staffPnrEl.addEventListener('input', function() {
+      staffPnrEl.value = normalizePnrValue(staffPnrEl.value);
+    });
+    staffPnrEl.addEventListener('keydown', function(evt) {
+      if (evt.key === 'Enter') {
+        evt.preventDefault();
+        if (staffMsgEl) {
+          staffMsgEl.focus();
+        } else {
+          saveStaffNoticeFromForm();
+        }
+      }
+    });
+  }
+  if (staffMsgEl) {
+    staffMsgEl.addEventListener('keydown', function(evt) {
+      if (evt.key === 'Enter') {
+        evt.preventDefault();
+        saveStaffNoticeFromForm();
+      }
+    });
+  }
+  if (staffPassEl) {
+    staffPassEl.addEventListener('keydown', function(evt) {
+      if (evt.key === 'Enter') {
+        evt.preventDefault();
+        staffLogin();
+      }
+    });
+  }
+  if (!restoreReturnStateIfAny()) {
+    renderScreen('page1');
+  }
+  renderVideoDisplay(VIDEO_URL);
+  renderStaffAuthView();
+});
+</script>
+
+
+</body></html>
